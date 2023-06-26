@@ -4,4 +4,4 @@
   - [ ] Autocomplete values
 - [ ] Formatting
 - [ ] Docs on hover
-
+- [ ] Add CI
