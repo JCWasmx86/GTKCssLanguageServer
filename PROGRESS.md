@@ -2,6 +2,6 @@
 - [ ] Autocompletion
   - [ ] Autocomplete properties
   - [ ] Autocomplete values
-- [ ] Formatting
+- [ ] Formatting using prettier.
 - [ ] Docs on hover
 - [ ] Add CI
