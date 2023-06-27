@@ -21,8 +21,12 @@
 namespace GtkCssLangServer {
     internal class ParseContext {
         Diagnostic[] diags;
-        internal ParseContext (Diagnostic[] diags) {
+        string text;
+        string uri;
+        internal ParseContext (Diagnostic[] diags, string text, string uri) {
             this.diags = diags;
+            this.text = text;
+            this.uri = uri;
         }
     }
 }

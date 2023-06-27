@@ -107,7 +107,7 @@ namespace GtkCssLangServer {
                                                   uri : new Variant.string (uri),
                                                   diagnostics: Json.gvariant_deserialize (new Json.Node.alloc ().init_array (arr), null)
             ));
-            return new ParseContext (diags);
+            return new ParseContext (diags, text, uri);
         }
 
         ParseContext ? parse_path (string file, string uri, Jsonrpc.Client client) throws Error {
