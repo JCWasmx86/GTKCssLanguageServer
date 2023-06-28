@@ -4,4 +4,4 @@
   - [ ] Autocomplete values
 - [ ] Formatting using prettier.
 - [ ] Docs on hover
-- [ ] Add CI
+- [x] Add CI
