@@ -23,10 +23,55 @@ namespace GtkCssLangServer {
         Diagnostic[] diags;
         string text;
         string uri;
+        string[] lines;
+
         internal ParseContext (Diagnostic[] diags, string text, string uri) {
             this.diags = diags;
             this.text = text;
             this.uri = uri;
+            this.lines = this.text.split ("\n");
+        }
+
+        // Used for hovering/completion
+        internal Identifier? extract_identifier (uint line, uint character) {
+            if (line >= this.lines.length)
+                return null;
+            var l = this.lines[line];
+            info ("Line == %s", l);
+            if (character >= l.length)
+                return null;
+            var c = l[character];
+            // Some other stuff like e.g. numbers
+            if (c != '-' && !c.isalpha ())
+                return null;
+            var lower = character;
+            while (lower != 0) {
+                var lc = l[lower];
+                if (lc != '-' && !lc.isalpha ()) {
+                    break;
+                }
+                lower--;
+            }
+            var higher = character;
+            while (higher != 0) {
+                var lc = l[higher];
+                if (lc != '-' && !lc.isalpha ()) {
+                    break;
+                }
+                higher++;
+            }
+            var n = l.substring (lower, higher - lower);
+            var r = new Range() {
+                start = new Position () {
+                    line = line,
+                    character = lower
+                },
+                end = new Position () {
+                    line = line,
+                    character = higher
+                },
+            };
+            return new Identifier (n, r);
         }
     }
 }

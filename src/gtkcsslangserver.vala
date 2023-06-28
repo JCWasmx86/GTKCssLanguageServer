@@ -32,6 +32,9 @@ namespace GtkCssLangServer {
             info ("Received notification %s", method);
             try {
                 switch (method) {
+                case "textDocument/didOpen":
+                    this.did_open (client, parameters);
+                    break;
                 case "textDocument/didChange":
                     this.did_change (client, parameters);
                     break;
@@ -53,6 +56,13 @@ namespace GtkCssLangServer {
             var ce = Util.parse_variant<TextDocumentContentChangeEvent> (elem);
             var text = ce.text;
             this.ctxs[uri] = this.parse (text, uri, client);
+        }
+
+        void did_open (Jsonrpc.Client client, Variant @params) throws Error {
+            var document = @params.lookup_value ("textDocument", VariantType.VARDICT);
+            var uri = (string) document.lookup_value ("uri", VariantType.STRING);
+            var path = Uri.parse (uri, UriFlags.NONE).get_path ();
+            this.ctxs[uri] = this.parse_path (path, uri, client);
         }
 
         void did_save (Jsonrpc.Client client, Variant @params) throws Error {
@@ -124,6 +134,9 @@ namespace GtkCssLangServer {
                 case "initialize":
                     this.initialize (client, id, parameters);
                     break;
+                case "textDocument/hover":
+                    this.hover (client, id, parameters);
+                    break;
                 }
             } catch (Error e) {
                 client.reply_error_async (id, Jsonrpc.ClientError.INTERNAL_ERROR, "Error: %s".printf (e.message), null);
@@ -132,13 +145,32 @@ namespace GtkCssLangServer {
             return true;
         }
 
+        void hover (Jsonrpc.Client client, Variant id, Variant params) throws Error {
+			var p = Util.parse_variant<TextDocumentPositionParams> (@params);
+            var uri = p.textDocument.uri;
+            var ctx = this.ctxs[uri];
+            info ("Hovering at %s:[%u:%u]", uri, p.position.line, p.position.character);
+            var identifier = ctx.extract_identifier (p.position.line, p.position.character);
+			if (identifier == null) {
+				client.reply (id, null);
+				return;
+			}
+			var hover_response = new Hover ();
+			hover_response.range = identifier.range;
+			hover_response.contents = new MarkupContent ();
+            hover_response.contents.kind = "markdown";
+            hover_response.contents.value = identifier.name;
+			client.reply (id, Util.object_to_variant (hover_response));
+		}
+
         void initialize (Jsonrpc.Client client, Variant id, Variant @params) throws Error {
             var init = Util.parse_variant<InitializeParams> (@params);
             this.base_uri = Uri.parse (init.rootUri, UriFlags.NONE);
             client.reply (id, build_dict (
                                           capabilities: build_dict (
                                                                     textDocumentSync: new Variant.int32 (1 /* Full*/),
-                                                                    diagnosticProvider: new Variant.boolean (true)
+                                                                    diagnosticProvider: new Variant.boolean (true),
+                                                                    hoverProvider: new Variant.boolean (true)
                                           ),
                                           serverInfo: build_dict (
                                                                   name: new Variant.string ("GTK CSS Language Server"),

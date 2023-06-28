@@ -24,5 +24,19 @@ namespace GtkCssLangServer {
             var json = Json.gvariant_serialize (variant);
             return Json.gobject_deserialize (typeof (T), json);
         }
+
+        internal static Variant object_to_variant (Object object) throws Error {
+			var json = Json.gobject_serialize (object);
+			return Json.gvariant_deserialize (json, null);
+		}
+    }
+    internal class Identifier {
+        internal string name;
+        internal Range range;
+
+        internal Identifier (string name, Range range) {
+            this.name = name;
+            this.range = range;
+        }
     }
 }
