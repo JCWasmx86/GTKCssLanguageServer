@@ -118,7 +118,7 @@ namespace GtkCssLangServer {
         public string? code { get; set; }
         public string? source { get; set; }
         public string message { get; set; }
-        internal string file { get; set; }
+        public string file { get; set; }
     }
     enum DiagnosticSeverity {
         Unset = 0,
