@@ -83,7 +83,6 @@ namespace GtkCssLangServer {
             var gtkcssprovider = new Gtk.CssProvider ();
             var diags = new Diagnostic[0];
             gtkcssprovider.parsing_error.connect ((section, error) => {
-                warning ("%s", error.message);
                 var start = section.get_start_location ();
                 var s_pos = new Position () {
                     line = (uint) start.lines,
