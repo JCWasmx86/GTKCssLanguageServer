@@ -37,7 +37,6 @@ namespace GtkCssLangServer {
             if (line >= this.lines.length)
                 return null;
             var l = this.lines[line];
-            info ("Line == %s", l);
             if (character >= l.length)
                 return null;
             var c = l[character];
