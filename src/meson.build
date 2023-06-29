@@ -1,4 +1,5 @@
 gtkcsslanguageserver_sources = [
+    'load.c',
     'main.vala',
     'gtkcsslangserver.vala',
     'protocol.vala',
@@ -16,9 +17,16 @@ gtkcsslanguageserver_deps = [
     meson.get_compiler('vala').find_library('posix'),
 ]
 
+ld = find_program('ld')
+data = custom_target('objectify-data',
+    output : 'data.o',
+    input : files('docs.json'),
+    command : [ ld, '--relocatable', '--format', 'binary', '--output', '@OUTPUT@', '@INPUT@' ],
+)
+
 executable(
     'gtkcsslanguageserver',
-    gtkcsslanguageserver_sources,
+    gtkcsslanguageserver_sources + data,
     vala_args: '--target-glib=2.58',
     dependencies: gtkcsslanguageserver_deps,
     install: true,

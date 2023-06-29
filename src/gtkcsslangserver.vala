@@ -17,6 +17,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+[CCode (cname = "load_docs")]
+public static extern string load_docs ();
+
 namespace GtkCssLangServer {
     public class Server : Jsonrpc.Server {
         Uri? base_uri;
