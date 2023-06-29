@@ -10,12 +10,12 @@ gtkcsslanguageserver_sources = [
 ]
 
 gtkcsslanguageserver_deps = [
+    dependency('gio-2.0'),
+    dependency('gio-unix-2.0'),
     dependency('glib-2.0'),
     dependency('gobject-2.0'),
-    dependency('jsonrpc-glib-1.0'),
-    dependency('gio-unix-2.0'),
-    dependency('gio-2.0'),
     dependency('gtk4'),
+    dependency('jsonrpc-glib-1.0'),
     meson.get_compiler('vala').find_library('posix'),
     meson.get_compiler('vala').find_library('ts', dirs: vapi_dir),
     ts_dep,
