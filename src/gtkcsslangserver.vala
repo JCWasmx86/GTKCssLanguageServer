@@ -145,22 +145,22 @@ namespace GtkCssLangServer {
         }
 
         void hover (Jsonrpc.Client client, Variant id, Variant params) throws Error {
-			var p = Util.parse_variant<TextDocumentPositionParams> (@params);
+            var p = Util.parse_variant<TextDocumentPositionParams> (@params);
             var uri = p.textDocument.uri;
             var ctx = this.ctxs[uri];
             info ("Hovering at %s:[%u:%u]", uri, p.position.line, p.position.character);
             var identifier = ctx.extract_identifier (p.position.line, p.position.character);
-			if (identifier == null) {
-				client.reply (id, null);
-				return;
-			}
-			var hover_response = new Hover ();
-			hover_response.range = identifier.range;
-			hover_response.contents = new MarkupContent ();
+            if (identifier == null) {
+                client.reply (id, null);
+                return;
+            }
+            var hover_response = new Hover ();
+            hover_response.range = identifier.range;
+            hover_response.contents = new MarkupContent ();
             hover_response.contents.kind = "markdown";
             hover_response.contents.value = identifier.name;
-			client.reply (id, Util.object_to_variant (hover_response));
-		}
+            client.reply (id, Util.object_to_variant (hover_response));
+        }
 
         void initialize (Jsonrpc.Client client, Variant id, Variant @params) throws Error {
             var init = Util.parse_variant<InitializeParams> (@params);
