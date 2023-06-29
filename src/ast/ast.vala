@@ -21,104 +21,104 @@ namespace GtkCssLangServer {
     public static Node to_node (TreeSitter.TSNode node, string text) {
         debug ("Converting node of type '%s'", node.type ());
         switch (node.type ()) {
-            case "stylesheet":
-                return new StyleSheet (node, text);
-            case "import_statement":
-                return new ImportStatement (node, text);
-            case "media_statement":
-                return new MediaStatement (node, text);
-            case "charset_statement":
-                return new CharsetStatement (node, text);
-            case "namespace_statement":
-                return new NamespaceStatement (node, text);
-            case "define_color_statement":
-                return new DefineColorStatement (node, text);
-            case "keyframes_statement":
-                return new KeyframesStatement (node, text);
-            case "keyframe_block_list":
-                return new KeyFrameBlockList (node, text);
-            case "keyframe_block":
-                return new KeyFrame (node, text);
-            case "from":
-                return new From (node, text);
-            case "to":
-                return new To (node, text);
-            case "supports_statement":
-                return new SupportsStatement (node, text);
-            case "at_rule":
-                return new AtRule (node, text);
-            case "rule_set":
-                return new RuleSet (node, text);
-            case "selectors":
-                return new Selectors (node, text);
-            case "block":
-                return new Block (node, text);
-            case "nesting_selector":
-                return new NestingSelector (node, text);
-            case "universal_selector":
-                return new UniversalSelector (node, text);
-            case "class_selector":
-                return new ClassSelector (node, text);
-            case "pseudo_class_selector":
-                return new PseudoClassSelector (node, text);
-            case "pseudo_element_selector":
-                return new PseudoElementSelector (node, text);
-            case "id_selector":
-                return new IdSelector (node, text);
-            case "attribute_selector":
-                return new AttributeSelector (node, text);
-            case "child_selector":
-                return new ChildSelector (node, text);
-            case "descendant_selector":
-                return new DescendantSelector (node, text);
-            case "sibling_selector":
-                return new SibilingSelector(node, text);
-            case "adjacent_sibling_selector":
-                return new AdjacentSibilingSelector (node, text);
-            case "pseudo_class_arguments":
-                return new PseudoClassArguments (node, text);
-            case "declaration":
-                return new Declaration (node, text);
-            case "last_declaration":
-                return new LastDeclaration (node, text);
-            case "important":
-                return new Important (node, text);
-            case "feature_query":
-                return new FeatureQuery (node, text);
-            case "parenthesized_query":
-                return new ParenthesizedQuery (node, text);
-            case "binary_query":
-                return new BinaryQuery (node, text);
-            case "unary_query":
-                return new UnaryQuery (node, text);
-            case "selector_query":
-                return new SelectorQuery (node, text);
-            case "parenthesized_value":
-                return new ParenthesizedValue (node, text);
-            case "color_value":
-                return new ColorValue (node, text);
-            case "string_value":
-                return new StringValue (node, text);
-            case "integer_value":
-                return new IntegerValue (node, text);
-            case "float_value":
-                return new FloatValue (node, text);
-            case "unit":
-                return new Unit (node, text);
-            case "call_expression":
-                return new CallExpression (node, text);
-            case "binary_expression":
-                return new BinaryExpression (node, text);
-            case "arguments":
-                return new Arguments (node, text);
-            case "identifier":
-                return new Identifier (node, text);
-            case "at_keyword":
-                return new AtKeyword (node, text);
-            case "plain_value":
-                return new PlainValue (node, text);
-            default:
-                return new ErrorNode (node, text);
+        case "stylesheet":
+            return new StyleSheet (node, text);
+        case "import_statement":
+            return new ImportStatement (node, text);
+        case "media_statement":
+            return new MediaStatement (node, text);
+        case "charset_statement":
+            return new CharsetStatement (node, text);
+        case "namespace_statement":
+            return new NamespaceStatement (node, text);
+        case "define_color_statement":
+            return new DefineColorStatement (node, text);
+        case "keyframes_statement":
+            return new KeyframesStatement (node, text);
+        case "keyframe_block_list":
+            return new KeyFrameBlockList (node, text);
+        case "keyframe_block":
+            return new KeyFrame (node, text);
+        case "from":
+            return new From (node, text);
+        case "to":
+            return new To (node, text);
+        case "supports_statement":
+            return new SupportsStatement (node, text);
+        case "at_rule":
+            return new AtRule (node, text);
+        case "rule_set":
+            return new RuleSet (node, text);
+        case "selectors":
+            return new Selectors (node, text);
+        case "block":
+            return new Block (node, text);
+        case "nesting_selector":
+            return new NestingSelector (node, text);
+        case "universal_selector":
+            return new UniversalSelector (node, text);
+        case "class_selector":
+            return new ClassSelector (node, text);
+        case "pseudo_class_selector":
+            return new PseudoClassSelector (node, text);
+        case "pseudo_element_selector":
+            return new PseudoElementSelector (node, text);
+        case "id_selector":
+            return new IdSelector (node, text);
+        case "attribute_selector":
+            return new AttributeSelector (node, text);
+        case "child_selector":
+            return new ChildSelector (node, text);
+        case "descendant_selector":
+            return new DescendantSelector (node, text);
+        case "sibling_selector":
+            return new SibilingSelector (node, text);
+        case "adjacent_sibling_selector":
+            return new AdjacentSibilingSelector (node, text);
+        case "pseudo_class_arguments":
+            return new PseudoClassArguments (node, text);
+        case "declaration":
+            return new Declaration (node, text);
+        case "last_declaration":
+            return new LastDeclaration (node, text);
+        case "important":
+            return new Important (node, text);
+        case "feature_query":
+            return new FeatureQuery (node, text);
+        case "parenthesized_query":
+            return new ParenthesizedQuery (node, text);
+        case "binary_query":
+            return new BinaryQuery (node, text);
+        case "unary_query":
+            return new UnaryQuery (node, text);
+        case "selector_query":
+            return new SelectorQuery (node, text);
+        case "parenthesized_value":
+            return new ParenthesizedValue (node, text);
+        case "color_value":
+            return new ColorValue (node, text);
+        case "string_value":
+            return new StringValue (node, text);
+        case "integer_value":
+            return new IntegerValue (node, text);
+        case "float_value":
+            return new FloatValue (node, text);
+        case "unit":
+            return new Unit (node, text);
+        case "call_expression":
+            return new CallExpression (node, text);
+        case "binary_expression":
+            return new BinaryExpression (node, text);
+        case "arguments":
+            return new Arguments (node, text);
+        case "identifier":
+            return new Identifier (node, text);
+        case "at_keyword":
+            return new AtKeyword (node, text);
+        case "plain_value":
+            return new PlainValue (node, text);
+        default:
+            return new ErrorNode (node, text);
         }
     }
 
@@ -1080,6 +1080,7 @@ namespace GtkCssLangServer {
         public override void visit (ASTVisitor v) {
             v.visitBinaryExpression (this);
         }
+
         public override void visit_children (ASTVisitor v) {
             this.left.visit (v);
             this.right.visit (v);
