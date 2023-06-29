@@ -25,10 +25,19 @@ namespace GtkCssLangServer {
         Uri? base_uri;
         MainLoop loop;
         GLib.HashTable<string, ParseContext> ctxs;
+        GLib.HashTable<string, string> docs;
 
         internal Server (MainLoop l) {
             this.loop = l;
             this.ctxs = new GLib.HashTable<string, ParseContext> (GLib.str_hash, GLib.str_equal);
+            this.docs = new GLib.HashTable<string, string> (GLib.str_hash, GLib.str_equal);
+            var p = new Json.Parser ();
+            p.load_from_data (load_docs());
+            var n = p.get_root ().get_object ();
+            foreach (var k in n.get_members ()) {
+                debug ("Loading docs for %s", k);
+                this.docs[k] = n.get_string_member (k);
+            }
         }
 
         protected override void notification (Jsonrpc.Client client, string method, Variant parameters) {
@@ -161,7 +170,7 @@ namespace GtkCssLangServer {
             hover_response.range = identifier.range;
             hover_response.contents = new MarkupContent ();
             hover_response.contents.kind = "markdown";
-            hover_response.contents.value = identifier.name;
+            hover_response.contents.value = this.docs.get (identifier.name) == null ? identifier.name : this.docs.get (identifier.name);
             client.reply (id, Util.object_to_variant (hover_response));
         }
 

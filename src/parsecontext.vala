@@ -47,6 +47,7 @@ namespace GtkCssLangServer {
             while (lower != 0) {
                 var lc = l[lower];
                 if (lc != '-' && lc != '@' && !lc.isalpha ()) {
+                    lower++;
                     break;
                 }
                 lower--;
