@@ -1,5 +1,6 @@
 gtkcsslanguageserver_sources = [
     'ast/ast.vala',
+    'ast/astvisitor.vala',
     'gtkcsslangserver.vala',
     'load.c',
     'main.vala',
