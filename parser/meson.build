@@ -10,7 +10,7 @@ ts_sources = [
     'src/language.c',
     'src/lexer.c',
     'src/node.c',
-    'src/parser.c',
+    'parser.c',
     'src/query.c',
     'src/scanner.c',
     'src/stack.c',
