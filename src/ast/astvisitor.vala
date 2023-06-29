@@ -64,7 +64,7 @@ namespace GtkCssLangServer {
         public abstract void visitBinaryExpression (BinaryExpression node);
         public abstract void visitIdentifier (Identifier node);
         public abstract void visitAtKeyword (AtKeyword node);
-        public abstract void visitPlainKeyword (PlainKeyword node);
+        public abstract void visitPlainValue (PlainValue node);
     }
 }
 
