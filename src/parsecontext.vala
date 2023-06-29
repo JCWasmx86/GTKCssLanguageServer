@@ -32,10 +32,14 @@ namespace GtkCssLangServer {
             this.lines = this.text.split ("\n");
             var t = new TreeSitter.TSParser ();
             t.set_language (TreeSitter.tree_sitter_css ());
+            var tree = t.parse_string (null, text, text.length);
+            if (tree != null) {
+                var root = tree.root_node();
+            }
         }
 
         // Used for hovering/completion
-        internal Identifier? extract_identifier (uint line, uint character) {
+        internal IIdentifier? extract_identifier (uint line, uint character) {
             if (line >= this.lines.length)
                 return null;
             var l = this.lines[line];
@@ -73,7 +77,7 @@ namespace GtkCssLangServer {
                     character = higher
                 },
             };
-            return new Identifier (n, r);
+            return new IIdentifier (n, r);
         }
     }
 }

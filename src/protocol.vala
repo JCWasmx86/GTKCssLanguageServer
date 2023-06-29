@@ -45,7 +45,7 @@ namespace GtkCssLangServer {
     class TextDocumentIdentifier : Object {
         public string uri { get; set; }
     }
-    class Position : Object {
+    public class Position : Object {
         public uint line { get; set; default = -1; }
         public uint character { get; set; default = -1; }
     }
@@ -86,7 +86,7 @@ namespace GtkCssLangServer {
         Operator = 25,
         TypeParameter = 26
     }
-    class Range : Object {
+    public class Range : Object {
         public Position start { get; set; }
         public Position end { get; set; }
     }

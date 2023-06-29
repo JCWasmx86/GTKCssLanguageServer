@@ -30,11 +30,11 @@ namespace GtkCssLangServer {
 			return Json.gvariant_deserialize (json, null);
 		}
     }
-    internal class Identifier {
+    internal class IIdentifier {
         internal string name;
         internal Range range;
 
-        internal Identifier (string name, Range range) {
+        internal IIdentifier (string name, Range range) {
             this.name = name;
             this.range = range;
         }
