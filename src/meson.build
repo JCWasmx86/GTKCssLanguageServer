@@ -15,6 +15,8 @@ gtkcsslanguageserver_deps = [
     dependency('gio-2.0'),
     dependency('gtk4'),
     meson.get_compiler('vala').find_library('posix'),
+    meson.get_compiler('vala').find_library('ts', dirs: vapi_dir),
+    ts_dep,
 ]
 
 ld = find_program('ld')
@@ -30,5 +32,6 @@ executable(
     vala_args: '--target-glib=2.58',
     dependencies: gtkcsslanguageserver_deps,
     install: true,
+    link_with: ts_lib,
 )
 

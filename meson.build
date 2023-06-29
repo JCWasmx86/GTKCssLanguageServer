@@ -7,5 +7,6 @@ project('gtkcsslanguageserver', ['c', 'vala'],
 vapi_dir = meson.current_source_dir() / 'vapi'
 add_project_arguments(['--vapidir', vapi_dir], language: 'vala')
 
+subdir('parser')
 subdir('src')
 

@@ -30,6 +30,8 @@ namespace GtkCssLangServer {
             this.text = text;
             this.uri = uri;
             this.lines = this.text.split ("\n");
+            var t = new TreeSitter.TSParser ();
+            t.set_language (TreeSitter.tree_sitter_css ());
         }
 
         // Used for hovering/completion
