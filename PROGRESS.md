@@ -5,7 +5,7 @@
 - [ ] Formatting using prettier.
 - [ ] Docs on hover
 - [x] Add CI
-- [ ] Fork [tree-sitter-css](https://github.com/tree-sitter/tree-sitter-css) and adjust to GTK syntax.
+- [x] Fork [tree-sitter-css](https://github.com/tree-sitter/tree-sitter-css) and adjust to GTK syntax.
   - [ ] Jump to definition
   - [ ] Better hovering
   - [ ] Better auto-completion
