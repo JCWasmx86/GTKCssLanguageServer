@@ -19,6 +19,7 @@
  */
 namespace GtkCssLangServer {
     public static Node to_node (TreeSitter.TSNode node, string text) {
+        debug ("Converting node of type '%s'", node.type ());
         switch (node.type ()) {
             case "stylesheet":
                 return new StyleSheet (node, text);
@@ -116,8 +117,9 @@ namespace GtkCssLangServer {
                 return new AtKeyword (node, text);
             case "plain_value":
                 return new PlainValue (node, text);
+            default:
+                return new ErrorNode (node, text);
         }
-        return null;
     }
 
     public class Node : Object {
@@ -136,6 +138,12 @@ namespace GtkCssLangServer {
                     character = t.end_point ().column
                 },
             };
+        }
+    }
+
+    public class ErrorNode : Node {
+        public ErrorNode (TreeSitter.TSNode node, string text) {
+            this.init_from_node (node);
         }
     }
 

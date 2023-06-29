@@ -24,6 +24,7 @@ namespace GtkCssLangServer {
         string text;
         string uri;
         string[] lines;
+        Node sheet;
 
         internal ParseContext (Diagnostic[] diags, string text, string uri) {
             this.diags = diags;
@@ -35,6 +36,7 @@ namespace GtkCssLangServer {
             var tree = t.parse_string (null, text, text.length);
             if (tree != null) {
                 var root = tree.root_node();
+                this.sheet = to_node (root, text);
             }
         }
 
