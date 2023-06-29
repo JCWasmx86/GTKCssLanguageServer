@@ -60,8 +60,10 @@ namespace GtkCssLangServer {
         public abstract void visitStringValue (StringValue node);
         public abstract void visitIntegerValue (IntegerValue node);
         public abstract void visitFloatValue (FloatValue node);
+        public abstract void visitUnit (Unit node);
         public abstract void visitCallExpression (CallExpression node);
         public abstract void visitBinaryExpression (BinaryExpression node);
+        public abstract void visitArguments (Arguments node);
         public abstract void visitIdentifier (Identifier node);
         public abstract void visitAtKeyword (AtKeyword node);
         public abstract void visitPlainValue (PlainValue node);

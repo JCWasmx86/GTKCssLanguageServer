@@ -139,6 +139,9 @@ namespace GtkCssLangServer {
                 },
             };
         }
+
+        public virtual void visit (ASTVisitor v) {
+        }
     }
 
     public class ErrorNode : Node {
@@ -157,6 +160,10 @@ namespace GtkCssLangServer {
                 this.items.add (to_node (node.named_child (i), text));
             }
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitStyleSheet (this);
+        }
     }
 
     public class ImportStatement : Node {
@@ -170,6 +177,10 @@ namespace GtkCssLangServer {
             for (var i = 1; i < node.named_child_count (); i++) {
                 this.queries.add (to_node (node.named_child (i), text));
             }
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitImportStatement (this);
         }
     }
 
@@ -187,6 +198,10 @@ namespace GtkCssLangServer {
             }
             this.block = to_node (node.named_child (node.named_child_count () - 1), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitMediaStatement (this);
+        }
     }
 
     public class CharsetStatement : Node {
@@ -195,6 +210,10 @@ namespace GtkCssLangServer {
         public CharsetStatement (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
             this.value = to_node (node.named_child (0), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitCharsetStatement (this);
         }
     }
 
@@ -212,6 +231,10 @@ namespace GtkCssLangServer {
                 this.value = to_node (node.named_child (0), text);
             }
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitNamespaceStatement (this);
+        }
     }
 
     public class DefineColorStatement : Node {
@@ -222,6 +245,10 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.identifier = to_node (node.named_child (0), text);
             this.value = to_node (node.named_child (1), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitDefineColorStatement (this);
         }
     }
 
@@ -242,6 +269,10 @@ namespace GtkCssLangServer {
                 this.keyframe_block_list = to_node (node.named_child (1), text);
             }
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitKeyframesStatement (this);
+        }
     }
 
     public class KeyFrameBlockList : Node {
@@ -254,6 +285,10 @@ namespace GtkCssLangServer {
                 this.blocks.add (to_node (node.named_child (i), text));
             }
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitKeyFrameBlockList (this);
+        }
     }
 
     public class KeyFrame : Node {
@@ -265,17 +300,29 @@ namespace GtkCssLangServer {
             this.value = to_node (node.named_child (0), text);
             this.block = to_node (node.named_child (1), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitKeyFrame (this);
+        }
     }
 
     public class From : Node {
         public From (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitFrom (this);
+        }
     }
 
     public class To : Node {
         public To (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitTo (this);
         }
     }
 
@@ -287,6 +334,10 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.query = to_node (node.named_child (0), text);
             this.block = to_node (node.named_child (1), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitSupportsStatement (this);
         }
     }
 
@@ -310,6 +361,10 @@ namespace GtkCssLangServer {
                 this.query.add (last_node);
             }
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitAtRule (this);
+        }
     }
 
     public class RuleSet : Node {
@@ -320,6 +375,10 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.selectors = to_node (node.named_child (0), text);
             this.block = to_node (node.named_child (1), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitRuleSet (this);
         }
     }
 
@@ -333,6 +392,10 @@ namespace GtkCssLangServer {
                 this.selectors.add (to_node (node.named_child (i), text));
             }
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitSelectors (this);
+        }
     }
 
     public class Block : Node {
@@ -345,17 +408,29 @@ namespace GtkCssLangServer {
                 this.block_items.add (to_node (node.named_child (i), text));
             }
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitBlock (this);
+        }
     }
 
     public class NestingSelector : Node {
         public NestingSelector (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitNestingSelector (this);
+        }
     }
 
     public class UniversalSelector : Node {
         public UniversalSelector (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitUniversalSelector (this);
         }
     }
 
@@ -372,6 +447,10 @@ namespace GtkCssLangServer {
             }
             this.selector = to_node (node.named_child (0), text);
             this.identifier = to_node (node.named_child (1), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitClassSelector (this);
         }
     }
 
@@ -404,6 +483,10 @@ namespace GtkCssLangServer {
             this.identifier = to_node (node.named_child (1), text);
             this.arguments = to_node (node.named_child (2), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitPseudoClassSelector (this);
+        }
     }
 
     public class PseudoElementSelector : Node {
@@ -420,6 +503,10 @@ namespace GtkCssLangServer {
             this.selector = to_node (node.named_child (0), text);
             this.identifier = to_node (node.named_child (1), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitPseudoElementSelector (this);
+        }
     }
 
     public class IdSelector : Node {
@@ -435,6 +522,10 @@ namespace GtkCssLangServer {
             }
             this.selector = to_node (node.named_child (0), text);
             this.identifier = to_node (node.named_child (1), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitIdSelector (this);
         }
     }
 
@@ -467,6 +558,10 @@ namespace GtkCssLangServer {
             this.identifier = to_node (node.named_child (1), text);
             this.value = to_node (node.named_child (2), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitAttributeSelector (this);
+        }
     }
 
     public class ChildSelector : Node {
@@ -477,6 +572,10 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.left = to_node (node.named_child (0), text);
             this.right = to_node (node.named_child (1), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitChildSelector (this);
         }
     }
 
@@ -491,6 +590,10 @@ namespace GtkCssLangServer {
             this.op = to_node (node.named_child (1), text);
             this.right = to_node (node.named_child (2), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitDescendantSelector (this);
+        }
     }
 
     public class SibilingSelector : Node {
@@ -501,6 +604,10 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.left = to_node (node.named_child (0), text);
             this.right = to_node (node.named_child (1), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitSibilingSelector (this);
         }
     }
 
@@ -513,6 +620,10 @@ namespace GtkCssLangServer {
             this.left = to_node (node.named_child (0), text);
             this.right = to_node (node.named_child (1), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitAdjacentSibilingSelector (this);
+        }
     }
 
     public class PseudoClassArguments : Node {
@@ -524,6 +635,10 @@ namespace GtkCssLangServer {
             for (var i = 0; i < node.named_child_count (); i++) {
                 this.values.add (to_node (node.named_child (i), text));
             }
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitPseudoClassArguments (this);
         }
     }
 
@@ -548,6 +663,10 @@ namespace GtkCssLangServer {
             else
                 this.values.add (last_node);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitDeclaration (this);
+        }
     }
 
     public class LastDeclaration : Node {
@@ -571,11 +690,19 @@ namespace GtkCssLangServer {
             else
                 this.values.add (last_node);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitLastDeclaration (this);
+        }
     }
 
     public class Important : Node {
         public Important (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitImportant (this);
         }
     }
 
@@ -591,6 +718,10 @@ namespace GtkCssLangServer {
                 this.values.add (to_node (node.named_child (i), text));
             }
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitFeatureQuery (this);
+        }
     }
 
     public class ParenthesizedQuery : Node {
@@ -599,6 +730,10 @@ namespace GtkCssLangServer {
         public ParenthesizedQuery (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
             this.query = to_node (node.named_child (0), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitParenthesizedQuery (this);
         }
     }
 
@@ -611,6 +746,10 @@ namespace GtkCssLangServer {
             this.lhs = to_node (node.named_child (0), text);
             this.rhs = to_node (node.named_child (1), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitBinaryQuery (this);
+        }
     }
 
     public class UnaryQuery : Node {
@@ -619,6 +758,10 @@ namespace GtkCssLangServer {
         public UnaryQuery (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
             this.query = to_node (node.named_child (0), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitUnaryQuery (this);
         }
     }
 
@@ -629,6 +772,10 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.selector = to_node (node.named_child (0), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitSelectorQuery (this);
+        }
     }
 
     public class ParenthesizedValue : Node {
@@ -638,17 +785,29 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.inner = to_node (node.named_child (0), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitParenthesizedValue (this);
+        }
     }
 
     public class ColorValue : Node {
         public ColorValue (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitColorValue (this);
+        }
     }
 
     public class StringValue : Node {
         public StringValue (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitStringValue (this);
         }
     }
 
@@ -659,6 +818,10 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.unit = (node.named_child_count () == 1) ? to_node (node.named_child (0), text) : null;
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitIntegerValue (this);
+        }
     }
 
     public class FloatValue : Node {
@@ -668,11 +831,19 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.unit = (node.named_child_count () == 1) ? to_node (node.named_child (0), text) : null;
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitFloatValue (this);
+        }
     }
 
     public class Unit : Node {
         public Unit (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitUnit (this);
         }
     }
 
@@ -685,6 +856,10 @@ namespace GtkCssLangServer {
             this.id = to_node (node.named_child (0), text);
             this.arguments = to_node (node.named_child (1), text);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitCallExpression (this);
+        }
     }
 
     public class BinaryExpression : Node {
@@ -695,6 +870,10 @@ namespace GtkCssLangServer {
             this.init_from_node (node);
             this.left = to_node (node.named_child (0), text);
             this.right = to_node (node.named_child (1), text);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitBinaryExpression (this);
         }
     }
 
@@ -708,11 +887,19 @@ namespace GtkCssLangServer {
                 this.values.add (to_node (node.named_child (i), text));
             }
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitArguments (this);
+        }
     }
 
     public class Identifier : Node {
         public Identifier (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitIdentifier (this);
         }
     }
 
@@ -720,11 +907,19 @@ namespace GtkCssLangServer {
         public AtKeyword (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
         }
+
+        public override void visit (ASTVisitor v) {
+            v.visitAtKeyword (this);
+        }
     }
 
     public class PlainValue : Node {
         public PlainValue (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
+        }
+
+        public override void visit (ASTVisitor v) {
+            v.visitPlainValue (this);
         }
     }
 }
