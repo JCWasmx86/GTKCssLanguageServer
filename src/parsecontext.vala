@@ -25,6 +25,7 @@ namespace GtkCssLangServer {
         string uri;
         string[] lines;
         Node sheet;
+        DataExtractor? extractor;
 
         internal ParseContext (Diagnostic[] diags, string text, string uri) {
             this.diags = diags;
@@ -39,6 +40,8 @@ namespace GtkCssLangServer {
                 this.sheet = to_node (root, text);
                 this.sheet.set_parents ();
                 tree.free ();
+                this.extractor = new DataExtractor (text);
+                this.sheet.visit (this.extractor);
             }
         }
 

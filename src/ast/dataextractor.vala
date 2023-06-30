@@ -36,22 +36,31 @@ namespace GtkCssLangServer {
 
     public class DataExtractor : ASTVisitor {
         // @define-color colors
-        private GLib.HashTable<string, Position> colors;
+        internal GLib.HashTable<string, Position> colors;
         // Access to colors from e.g. libadwaita
-        private ColorReference[] external_color_references;
+        internal ColorReference[] external_color_references;
         // @foo and there is a @define-color foo #123123
-        private ColorReference[] color_references;
+        internal ColorReference[] color_references;
         // E.g. calls to lighter(color) or mix(a,b)
-        private CallReference[] calls;
+        internal CallReference[] calls;
         // Property-references like min-width: 5px;
-        private PropertyReference[] property_uses;
+        internal PropertyReference[] property_uses;
 
-        public DataExtractor () {
+        internal string[] lines;
+
+        public DataExtractor (string text) {
             this.colors = new GLib.HashTable<string, Position> (GLib.str_hash, GLib.str_equal);
             this.external_color_references = new ColorReference[0];
             this.color_references = new ColorReference[0];
             this.calls = new CallReference[0];
             this.property_uses = new PropertyReference[0];
+            this.lines = text.split ("\n");
+        }
+
+        private string extract (Node node) {
+            if (node.range.start.line != node.range.end.line)
+                return "<<>>";
+            return this.lines[node.range.start.line].substring (node.range.start.line, node.range.end.line - node.range.start.line);
         }
 
         public void visitStyleSheet (StyleSheet node) { node.visit_children (this); }
@@ -59,7 +68,14 @@ namespace GtkCssLangServer {
         public void visitMediaStatement (MediaStatement node) { node.visit_children (this); }
         public void visitCharsetStatement (CharsetStatement node) { node.visit_children (this); }
         public void visitNamespaceStatement (NamespaceStatement node) { node.visit_children (this); }
-        public void visitDefineColorStatement (DefineColorStatement node) { node.visit_children (this); }
+        public void visitDefineColorStatement (DefineColorStatement node) {
+            node.visit_children (this);
+            if (node.identifier is Identifier) {
+                var name = this.extract (node.identifier);
+                this.colors[name] = node.identifier.range.start;
+            }
+        }
+
         public void visitKeyframesStatement (KeyframesStatement node) { node.visit_children (this); }
         public void visitKeyFrameBlockList (KeyFrameBlockList node) { node.visit_children (this); }
         public void visitKeyFrame (KeyFrame node) { node.visit_children (this); }
