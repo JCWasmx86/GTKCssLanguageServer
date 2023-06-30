@@ -23,15 +23,23 @@ gtkcsslanguageserver_deps = [
 ]
 
 ld = find_program('ld')
-data = custom_target('objectify-data',
-    output : 'data.o',
-    input : files('docs.json'),
-    command : [ ld, '--relocatable', '--format', 'binary', '--output', '@OUTPUT@', '@INPUT@' ],
-)
+
+jsons = [
+    'colors.json',
+    'docs.json',
+]
+objs = []
+foreach j : jsons
+    objs += custom_target('objectify-' + j,
+        output : j + '.o',
+        input: files(j),
+        command : [ ld, '--relocatable', '--format', 'binary', '--output', '@OUTPUT@', '@INPUT@' ],
+    )
+endforeach
 
 executable(
     'gtkcsslanguageserver',
-    gtkcsslanguageserver_sources + data,
+    gtkcsslanguageserver_sources + objs,
     vala_args: '--target-glib=2.58',
     dependencies: gtkcsslanguageserver_deps,
     install: true,
