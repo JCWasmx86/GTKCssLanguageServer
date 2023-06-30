@@ -123,7 +123,16 @@ namespace GtkCssLangServer {
         public void visitBinaryExpression (BinaryExpression node) { node.visit_children (this); }
         public void visitArguments (Arguments node) { node.visit_children (this); }
         public void visitIdentifier (Identifier node) { node.visit_children (this); }
-        public void visitAtKeyword (AtKeyword node) { node.visit_children (this); }
+        public void visitAtKeyword (AtKeyword node) {
+            if (node.parent is Declaration || node.parent is LastDeclaration) {
+                info ("Found color reference: %s", this.extract (node));
+                this.color_references += new ColorReference () {
+                    name = this.extract (node).substring (1),
+                    range = node.range
+                };
+            }
+            node.visit_children (this);
+        }
         public void visitPlainValue (PlainValue node) { node.visit_children (this); }
     }
 }

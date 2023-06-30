@@ -36,7 +36,7 @@ namespace GtkCssLangServer {
             t.set_language (TreeSitter.tree_sitter_css ());
             var tree = t.parse_string (null, text, text.length);
             if (tree != null) {
-                var root = tree.root_node();
+                var root = tree.root_node ();
                 this.sheet = to_node (root, text);
                 this.sheet.set_parents ();
                 tree.free ();
@@ -45,16 +45,16 @@ namespace GtkCssLangServer {
             }
         }
 
-        internal DocumentSymbol[] symbols() {
+        internal DocumentSymbol[] symbols () {
             var r = new DocumentSymbol[0];
             if (this.extractor == null)
                 return r;
             foreach (var color in this.extractor.colors.get_keys ()) {
                 var p = this.extractor.colors[color];
-                r += new DocumentSymbol() {
+                r += new DocumentSymbol () {
                     name = color,
                     kind = SymbolKind.Field,
-                    range = new Range() {
+                    range = new Range () {
                         start = p,
                         end = p
                     }
@@ -63,8 +63,23 @@ namespace GtkCssLangServer {
             return r;
         }
 
+        internal Location ? find_declaration (Position p) {
+            foreach (var ca in this.extractor.color_references) {
+                if (ca.range.contains (p) && this.extractor.colors[ca.name] != null) {
+                    return new Location () {
+                               uri = this.uri,
+                               range = new Range () {
+                                   start = this.extractor.colors[ca.name],
+                                   end = this.extractor.colors[ca.name],
+                               }
+                    };
+                }
+            }
+            return null;
+        }
+
         // Used for hovering/completion
-        internal IIdentifier? extract_identifier (uint line, uint character) {
+        internal IIdentifier ? extract_identifier (uint line, uint character) {
             if (line >= this.lines.length)
                 return null;
             var l = this.lines[line];
@@ -92,7 +107,7 @@ namespace GtkCssLangServer {
                 higher++;
             }
             var n = l.substring (lower, higher - lower);
-            var r = new Range() {
+            var r = new Range () {
                 start = new Position () {
                     line = line,
                     character = lower

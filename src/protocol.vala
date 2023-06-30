@@ -48,6 +48,13 @@ namespace GtkCssLangServer {
     public class Position : Object {
         public uint line { get; set; default = -1; }
         public uint character { get; set; default = -1; }
+
+        public int compare_to (Position other) {
+            return line > other.line ? 1 :
+                (line == other.line ?
+                 (character > other.character ? 1 :
+                  (character == other.character ? 0 : -1)) : -1);
+        }
     }
 
     class DocumentSymbolParams: Object {
@@ -93,6 +100,10 @@ namespace GtkCssLangServer {
     public class Range : Object {
         public Position start { get; set; }
         public Position end { get; set; }
+
+        public bool contains (Position pos) {
+            return start.compare_to (pos) <= 0 && pos.compare_to (end) <= 0;
+        }
     }
 
     class Location : Object {

@@ -32,7 +32,7 @@ namespace GtkCssLangServer {
             this.ctxs = new GLib.HashTable<string, ParseContext> (GLib.str_hash, GLib.str_equal);
             this.docs = new GLib.HashTable<string, string> (GLib.str_hash, GLib.str_equal);
             var p = new Json.Parser ();
-            p.load_from_data (load_docs());
+            p.load_from_data (load_docs ());
             var n = p.get_root ().get_object ();
             foreach (var k in n.get_members ()) {
                 debug ("Loading docs for %s", k);
@@ -151,12 +151,28 @@ namespace GtkCssLangServer {
                 case "textDocument/documentSymbol":
                     this.symbols (client, id, parameters);
                     break;
+                case "textDocument/declaration":
+                case "textDocument/definition":
+                    this.definition (client, id, parameters);
+                    break;
                 }
             } catch (Error e) {
                 client.reply_error_async (id, Jsonrpc.ClientError.INTERNAL_ERROR, "Error: %s".printf (e.message), null);
                 return false;
             }
             return true;
+        }
+
+        void definition (Jsonrpc.Client client, Variant id, Variant params) throws Error {
+            var p = Util.parse_variant<TextDocumentPositionParams> (@params);
+            var uri = p.textDocument.uri;
+            var ctx = this.ctxs[uri];
+            if (ctx == null) {
+                client.reply (id, null);
+                return;
+            }
+            var location = ctx.find_declaration (p.position);
+            client.reply (id, ((location == null) ? null : Util.object_to_variant (location)));
         }
 
         void symbols (Jsonrpc.Client client, Variant id, Variant params) throws Error {
@@ -199,7 +215,9 @@ namespace GtkCssLangServer {
                                                                     textDocumentSync: new Variant.int32 (1 /* Full*/),
                                                                     diagnosticProvider: new Variant.boolean (true),
                                                                     hoverProvider: new Variant.boolean (true),
-                                                                    documentSymbolProvider: new Variant.boolean (true)
+                                                                    documentSymbolProvider: new Variant.boolean (true),
+                                                                    declarationProvider: new Variant.boolean (true),
+                                                                    definitionProvider: new Variant.boolean (true)
                                           ),
                                           serverInfo: build_dict (
                                                                   name: new Variant.string ("GTK CSS Language Server"),
