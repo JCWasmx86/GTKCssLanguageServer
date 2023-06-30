@@ -19,7 +19,9 @@
  */
 namespace GtkCssLangServer {
     public static Node to_node (TreeSitter.TSNode node, string text) {
-        debug ("Converting node of type '%s'", node.type ());
+        debug ("Converting node of type '%s' at [%u:%u]->[%u:%u]", node.type (),
+               node.start_point ().row, node.start_point ().column,
+               node.end_point ().row, node.end_point ().column);
         switch (node.type ()) {
         case "stylesheet":
             return new StyleSheet (node, text);
@@ -111,6 +113,16 @@ namespace GtkCssLangServer {
             return new BinaryExpression (node, text);
         case "arguments":
             return new Arguments (node, text);
+        case "property_name":
+        case "keyword_query":
+        case "feature_name":
+        case "function_name":
+        case "attribute_name":
+        case "id_name":
+        case "tag_name":
+        case "class_name":
+        case "keyframes_name":
+        case "namespace_name":
         case "identifier":
             return new Identifier (node, text);
         case "at_keyword":
@@ -118,6 +130,7 @@ namespace GtkCssLangServer {
         case "plain_value":
             return new PlainValue (node, text);
         default:
+            warning ("Bad node: %s", node.type ());
             return new ErrorNode (node, text);
         }
     }
@@ -415,12 +428,14 @@ namespace GtkCssLangServer {
             for (var i = 1; i < node.named_child_count () - 1; i++) {
                 this.query.add (to_node (node.named_child (i), text));
             }
-            var last = node.named_child_count () - 1;
-            var last_node = to_node (node.named_child (last), text);
-            if (last_node is Block) {
-                this.block = last_node;
-            } else {
-                this.query.add (last_node);
+            if (node.named_child_count () > 1) {
+                var last = node.named_child_count () - 1;
+                var last_node = to_node (node.named_child (last), text);
+                if (last_node is Block) {
+                    this.block = last_node;
+                } else {
+                    this.query.add (last_node);
+                }
             }
         }
 
@@ -801,12 +816,14 @@ namespace GtkCssLangServer {
             for (var i = 2; i < node.named_child_count () - 1; i++) {
                 this.values.add (to_node (node.named_child (i), text));
             }
-            var last_idx = node.named_child_count () - 1;
-            var last_node = to_node (node.named_child (last_idx), text);
-            if (last_node is Important)
-                important = last_node;
-            else
-                this.values.add (last_node);
+            if (node.named_child_count () > 2) {
+                var last_idx = node.named_child_count () - 1;
+                var last_node = to_node (node.named_child (last_idx), text);
+                if (last_node is Important)
+                    important = last_node;
+                else
+                    this.values.add (last_node);
+            }
         }
 
         public override void visit (ASTVisitor v) {
@@ -837,12 +854,14 @@ namespace GtkCssLangServer {
             for (var i = 2; i < node.named_child_count () - 1; i++) {
                 this.values.add (to_node (node.named_child (i), text));
             }
-            var last_idx = node.named_child_count () - 1;
-            var last_node = to_node (node.named_child (last_idx), text);
-            if (last_node is Important)
-                important = last_node;
-            else
-                this.values.add (last_node);
+            if (node.named_child_count () > 2) {
+                var last_idx = node.named_child_count () - 1;
+                var last_node = to_node (node.named_child (last_idx), text);
+                if (last_node is Important)
+                    important = last_node;
+                else
+                    this.values.add (last_node);
+            }
         }
 
         public override void visit (ASTVisitor v) {
