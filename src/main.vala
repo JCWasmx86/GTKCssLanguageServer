@@ -19,7 +19,16 @@
  */
 
 int main (string[] args) {
-	GLib.Log.writer_default_set_use_stderr (true);
+    if (args.length == 2) {
+        var file = args[1];
+        string contents;
+        FileUtils.get_contents (file, out contents);
+        for (var i = 0; i < 1000; i++) {
+            new GtkCssLangServer.ParseContext (new GtkCssLangServer.Diagnostic[0], contents, file);
+        }
+        return 0;
+    }
+    GLib.Log.writer_default_set_use_stderr (true);
 	GLib.Log.set_debug_enabled (true);
 	var main_loop = new MainLoop ();
 	var s = new GtkCssLangServer.Server (main_loop);
