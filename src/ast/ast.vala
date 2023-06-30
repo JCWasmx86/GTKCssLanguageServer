@@ -896,14 +896,12 @@ namespace GtkCssLangServer {
 
     public class DescendantSelector : Node {
         public Node left;
-        public Node op;
         public Node right;
 
         public DescendantSelector (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
             this.left = to_node (node.named_child (0), text);
-            this.op = to_node (node.named_child (1), text);
-            this.right = to_node (node.named_child (2), text);
+            this.right = to_node (node.named_child (1), text);
         }
 
         public override void visit (ASTVisitor v) {
@@ -912,15 +910,12 @@ namespace GtkCssLangServer {
 
         public override void visit_children (ASTVisitor v) {
             this.left.visit (v);
-            this.op.visit (v);
             this.right.visit (v);
         }
 
         public override void set_parents () {
             this.left.parent = this;
             this.left.set_parents ();
-            this.op.parent = this;
-            this.op.set_parents ();
             this.right.parent = this;
             this.right.set_parents ();
         }
