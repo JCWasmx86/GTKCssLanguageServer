@@ -1,0 +1,203 @@
+{
+  "accent": {
+    "colors": [
+      "@accent_color",
+      "@accent_bg_color",
+      "@accent_fg_color"
+    ],
+    "docs": "The accent color is used across many different widgets, often to indicate that a widget is important, interactive, or currently active. Try to avoid using it on large surfaces, or on too many items on the same view. The `.accent` style class allows to use it for widgets such as `GtkLabel`."
+  },
+  "destructive": {
+    "colors": [
+      "@destructive_color",
+      "@destructive_bg_color",
+      "@destructive_fg_color"
+    ],
+    "docs": "The destructive color indicates a dangerous action such as deleting a file. It's used by `GtkButton` with the `.destructive-action` style class."
+  },
+  "success": {
+    "colors": [
+      "@success_color",
+      "@success_bg_color",
+      "@success_fg_color"
+    ],
+    "docs": "This color is used with the `.success` style class, or in a `GtkLevelBar` with the `GTK_LEVEL_BAR_OFFSET_HIGH` offset."
+  },
+  "warning": {
+    "colors": [
+      "@warning_color",
+      "@warning_bg_color",
+      "@warning_fg_color"
+    ],
+    "docs": "This color is used with the `.warning` style class, or in a `GtkLevelBar` with the `GTK_LEVEL_BAR_OFFSET_LOW` offset."
+  },
+  "error": {
+    "colors": [
+      "@error_color",
+      "@error_bg_color",
+      "@error_fg_color"
+    ],
+    "docs": "This color is used with the `.error` style class."
+  },
+  "window": {
+    "colors": [
+      "@window_bg_color",
+      "@window_fg_color"
+    ],
+    "docs": "These colors are used on `GtkWindow`, as well as with the `.background` style class."
+  },
+  "view": {
+    "colors": [
+      "@view_bg_color",
+      "@view_fg_color"
+    ],
+    "docs": "These colors are used in a variety of widgets such as `GtkTextView`, as well as with the `.view` style class."
+  },
+  "header_bar": {
+    "colors": [
+      "@headerbar_bg_color",
+      "@headerbar_fg_color",
+      "@headerbar_border_color",
+      "@headerbar_backdrop_color",
+      "@headerbar_shade_color"
+    ],
+    "docs": "These colors are used for header bars and similar widgets, generally attached to the top or bottom sides of a window."
+  },
+  "sidebar": {
+    "colors": [
+      "@sidebar_bg_color",
+      "@sidebar_fg_color",
+      "@sidebar_backdrop_color",
+      "@sidebar_shade_color"
+    ],
+    "docs": "These colors are used for sidebars, generally attached to the left or right sides of a window."
+  },
+  "secondary_sidebar": {
+    "colors": [
+      "@secondary_sidebar_bg_color",
+      "@secondary_sidebar_fg_color",
+      "@secondary_sidebar_backdrop_color",
+      "@secondary_sidebar_shade_color"
+    ],
+    "docs": "These colors are used for middle panes in triple-pane layouts, created via nesting two split views within one another."
+  },
+  "card": {
+    "colors": [
+      "@card_bg_color",
+      "@card_fg_color",
+      "@card_shade_color"
+    ],
+    "docs": "These colors are used for cards and boxed lists."
+  },
+  "thumbnail": {
+    "colors": [
+      "@thumbnail_bg_color",
+      "@thumbnail_fg_color"
+    ],
+    "docs": "These colors are used for `AdwTabOverview` thumbnails."
+  },
+  "dialog": {
+    "colors": [
+      "@dialog_bg_color",
+      "@dialog_fg_color"
+    ],
+    "docs": "These colors are used for `AdwMessageDialog`."
+  },
+  "popover": {
+    "colors": [
+      "@popover_bg_color",
+      "@popover_fg_color"
+    ],
+    "docs": "These colors are used for GtkPopover."
+  },
+  "shade_color": {
+    "colors": [
+      "@shade_color"
+    ],
+    "docs": "`@shade_color` is used for scroll undershoots, as well as transitions in `AdwNavigationView`, `AdwOverlaySplitView`, `AdwLeaflet` and `AdwFlap`. This color should always be partially transparent black, with the opacity tuned to be well visible on top of `@window_bg_color`."
+  },
+  "scrollbar_outline": {
+    "colors": [
+      "@scrollbar_outline_color"
+    ],
+    "docs": "`@scrollbar_outline_color` is used by `GtkScrollbar` to ensure that overlay scrollbars are visible regardless of the content color. It should always be the opposite of the scrollbar color - light with a dark scrollbar and dark with a light scrollbar."
+  },
+  "borders": {
+    "colors": [
+      "@borders"
+    ],
+    "docs": "This color should be used for supporting high contrast mode automatically."
+  },
+  "palette": {
+    "colors": [
+      "@blue_1",
+      "@blue_2",
+      "@blue_3",
+      "@blue_4",
+      "@blue_5",
+      "@green_1",
+      "@green_2",
+      "@green_3",
+      "@green_4",
+      "@green_5",
+      "@yellow_1",
+      "@yellow_2",
+      "@yellow_3",
+      "@yellow_4",
+      "@yellow_5",
+      "@orange_1",
+      "@orange_2",
+      "@orange_3",
+      "@orange_4",
+      "@orange_5",
+      "@red_1",
+      "@red_2",
+      "@red_3",
+      "@red_4",
+      "@red_5",
+      "@purple_1",
+      "@purple_2",
+      "@purple_3",
+      "@purple_4",
+      "@purple_5",
+      "@brown_1",
+      "@brown_2",
+      "@brown_3",
+      "@brown_4",
+      "@brown_5",
+      "@light_1",
+      "@light_2",
+      "@light_3",
+      "@light_4",
+      "@light_5",
+      "@dark_1",
+      "@dark_2",
+      "@dark_3",
+      "@dark_4",
+      "@dark_5"
+    ],
+    "docs": "The GNOME color palette is intended for use in app icons and illustrations."
+  },
+  "compat": {
+    "colors": [
+      "@theme_bg_color",
+      "@theme_fg_color",
+      "@theme_base_color",
+      "@theme_text_color",
+      "@theme_selected_bg_color",
+      "@theme_selected_fg_color",
+      "@insensitive_bg_color",
+      "@insensitive_fg_color",
+      "@insensitive_base_color",
+      "@theme_unfocused_bg_color",
+      "@theme_unfocused_fg_color",
+      "@theme_unfocused_base_color",
+      "@theme_unfocused_text_color",
+      "@theme_unfocused_selected_bg_color",
+      "@theme_unfocused_selected_fg_color",
+      "@unfocused_insensitive_color",
+      "@unfocused_borders"
+    ],
+    "docs": "Alias of UI colors derived from GTK3"
+  }
+}
