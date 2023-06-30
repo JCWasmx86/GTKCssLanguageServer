@@ -10,4 +10,6 @@
   - [ ] Better hovering
   - [ ] Better auto-completion
   - [ ] Documentsymbols
+    - [x] Colors defined using `@define-color`
+    - [ ] How to represent RuleSets?
 
