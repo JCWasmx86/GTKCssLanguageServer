@@ -138,6 +138,7 @@ namespace GtkCssLangServer {
     public class Node : Object {
         public Range range;
         public uint32 length;
+        public weak Node? parent;
 
         protected void init_from_node (TreeSitter.TSNode t) {
             this.length = t.end_byte () - t.start_byte ();
@@ -157,6 +158,9 @@ namespace GtkCssLangServer {
         }
 
         public virtual void visit_children (ASTVisitor v) {
+        }
+
+        public virtual void set_parents () {
         }
     }
 
@@ -186,6 +190,13 @@ namespace GtkCssLangServer {
                 i.visit (v);
             }
         }
+
+        public override void set_parents () {
+            foreach (var i in this.items) {
+                i.parent = this;
+                i.set_parents ();
+            }
+        }
     }
 
     public class ImportStatement : Node {
@@ -209,6 +220,15 @@ namespace GtkCssLangServer {
             this.value.visit (v);
             foreach (var i in this.queries) {
                 i.visit (v);
+            }
+        }
+
+        public override void set_parents () {
+            this.value.parent = this;
+            this.value.set_parents ();
+            foreach (var i in this.queries) {
+                i.parent = this;
+                i.set_parents ();
             }
         }
     }
@@ -239,6 +259,17 @@ namespace GtkCssLangServer {
             }
             this.block.visit (v);
         }
+
+        public override void set_parents () {
+            this.value.parent = this;
+            this.value.set_parents ();
+            foreach (var i in this.queries) {
+                i.parent = this;
+                i.set_parents ();
+            }
+            this.block.parent = this;
+            this.block.set_parents ();
+        }
     }
 
     public class CharsetStatement : Node {
@@ -255,6 +286,11 @@ namespace GtkCssLangServer {
 
         public override void visit_children (ASTVisitor v) {
             this.value.visit (v);
+        }
+
+        public override void set_parents () {
+            this.value.parent = this;
+            this.value.set_parents ();
         }
     }
 
@@ -282,6 +318,13 @@ namespace GtkCssLangServer {
                 this.id.visit (v);
             this.value.visit (v);
         }
+
+        public override void set_parents () {
+            this.id.parent = this;
+            this.id.set_parents ();
+            this.value.parent = this;
+            this.value.set_parents ();
+        }
     }
 
     public class DefineColorStatement : Node {
@@ -301,6 +344,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             this.identifier.visit (v);
             this.value.visit (v);
+        }
+
+        public override void set_parents () {
+            this.identifier.parent = this;
+            this.identifier.set_parents ();
+            this.value.parent = this;
+            this.value.set_parents ();
         }
     }
 
@@ -332,6 +382,17 @@ namespace GtkCssLangServer {
             this.value.visit (v);
             this.keyframe_block_list.visit (v);
         }
+
+        public override void set_parents () {
+            if (this.value != null) {
+                this.value.parent = this;
+                this.value.set_parents ();
+            }
+            this.name.parent = this;
+            this.name.set_parents ();
+            this.keyframe_block_list.parent = this;
+            this.keyframe_block_list.set_parents ();
+        }
     }
 
     public class KeyFrameBlockList : Node {
@@ -354,6 +415,13 @@ namespace GtkCssLangServer {
                 b.visit (v);
             }
         }
+
+        public override void set_parents () {
+            foreach (var b in this.blocks) {
+                b.parent = this;
+                b.set_parents ();
+            }
+        }
     }
 
     public class KeyFrame : Node {
@@ -373,6 +441,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             this.block.visit (v);
             this.value.visit (v);
+        }
+
+        public override void set_parents () {
+            this.value.parent = this;
+            this.value.set_parents ();
+            this.block.parent = this;
+            this.block.set_parents ();
         }
     }
 
@@ -414,6 +489,13 @@ namespace GtkCssLangServer {
             this.query.visit (v);
             this.block.visit (v);
         }
+
+        public override void set_parents () {
+            this.query.parent = this;
+            this.query.set_parents ();
+            this.block.parent = this;
+            this.block.set_parents ();
+        }
     }
 
     public class AtRule : Node {
@@ -450,6 +532,19 @@ namespace GtkCssLangServer {
             if (this.block != null)
                 this.block.visit (v);
         }
+
+        public override void set_parents () {
+            this.keyword.parent = this;
+            this.keyword.set_parents ();
+            foreach (var q in this.query) {
+                q.parent = this;
+                q.set_parents ();
+            }
+            if (this.block != null) {
+                this.block.parent = this;
+                this.block.set_parents ();
+            }
+        }
     }
 
     public class RuleSet : Node {
@@ -469,6 +564,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             this.selectors.visit (v);
             this.block.visit (v);
+        }
+
+        public override void set_parents () {
+            this.selectors.parent = this;
+            this.selectors.set_parents ();
+            this.block.parent = this;
+            this.block.set_parents ();
         }
     }
 
@@ -491,6 +593,13 @@ namespace GtkCssLangServer {
             foreach (var q in this.selectors)
                 q.visit (v);
         }
+
+        public override void set_parents () {
+            foreach (var q in this.selectors) {
+                q.parent = this;
+                q.set_parents ();
+            }
+        }
     }
 
     public class Block : Node {
@@ -511,6 +620,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             foreach (var q in this.block_items)
                 q.visit (v);
+        }
+
+        public override void set_parents () {
+            foreach (var q in this.block_items) {
+                q.parent = this;
+                q.set_parents ();
+            }
         }
     }
 
@@ -558,6 +674,15 @@ namespace GtkCssLangServer {
                 this.selector.visit (v);
             this.identifier.visit (v);
         }
+
+        public override void set_parents () {
+            if (this.selector != null) {
+                this.selector.parent = this;
+                this.selector.set_parents ();
+            }
+            this.identifier.parent = this;
+            this.identifier.set_parents ();
+        }
     }
 
     public class PseudoClassSelector : Node {
@@ -601,6 +726,19 @@ namespace GtkCssLangServer {
             if (this.arguments != null)
                 this.arguments.visit (v);
         }
+
+        public override void set_parents () {
+            if (this.selector != null) {
+                this.selector.parent = this;
+                this.selector.set_parents ();
+            }
+            this.identifier.parent = this;
+            this.identifier.set_parents ();
+            if (this.arguments != null) {
+                this.arguments.parent = this;
+                this.arguments.set_parents ();
+            }
+        }
     }
 
     public class PseudoElementSelector : Node {
@@ -627,6 +765,15 @@ namespace GtkCssLangServer {
                 this.selector.visit (v);
             this.identifier.visit (v);
         }
+
+        public override void set_parents () {
+            if (this.selector != null) {
+                this.selector.parent = this;
+                this.selector.set_parents ();
+            }
+            this.identifier.parent = this;
+            this.identifier.set_parents ();
+        }
     }
 
     public class IdSelector : Node {
@@ -652,6 +799,15 @@ namespace GtkCssLangServer {
             if (this.selector != null)
                 this.selector.visit (v);
             this.identifier.visit (v);
+        }
+
+        public override void set_parents () {
+            if (this.selector != null) {
+                this.selector.parent = this;
+                this.selector.set_parents ();
+            }
+            this.identifier.parent = this;
+            this.identifier.set_parents ();
         }
     }
 
@@ -696,6 +852,19 @@ namespace GtkCssLangServer {
             if (this.value != null)
                 this.value.visit (v);
         }
+
+        public override void set_parents () {
+            if (this.selector != null) {
+                this.selector.parent = this;
+                this.selector.set_parents ();
+            }
+            this.identifier.parent = this;
+            this.identifier.set_parents ();
+            if (this.value != null) {
+                this.value.parent = this;
+                this.value.set_parents ();
+            }
+        }
     }
 
     public class ChildSelector : Node {
@@ -715,6 +884,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             this.left.visit (v);
             this.right.visit (v);
+        }
+
+        public override void set_parents () {
+            this.left.parent = this;
+            this.left.set_parents ();
+            this.right.parent = this;
+            this.right.set_parents ();
         }
     }
 
@@ -739,6 +915,15 @@ namespace GtkCssLangServer {
             this.op.visit (v);
             this.right.visit (v);
         }
+
+        public override void set_parents () {
+            this.left.parent = this;
+            this.left.set_parents ();
+            this.op.parent = this;
+            this.op.set_parents ();
+            this.right.parent = this;
+            this.right.set_parents ();
+        }
     }
 
     public class SibilingSelector : Node {
@@ -758,6 +943,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             this.left.visit (v);
             this.right.visit (v);
+        }
+
+        public override void set_parents () {
+            this.left.parent = this;
+            this.left.set_parents ();
+            this.right.parent = this;
+            this.right.set_parents ();
         }
     }
 
@@ -779,6 +971,13 @@ namespace GtkCssLangServer {
             this.left.visit (v);
             this.right.visit (v);
         }
+
+        public override void set_parents () {
+            this.left.parent = this;
+            this.left.set_parents ();
+            this.right.parent = this;
+            this.right.set_parents ();
+        }
     }
 
     public class PseudoClassArguments : Node {
@@ -799,6 +998,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             foreach (var b in this.values)
                 b.visit (v);
+        }
+
+        public override void set_parents () {
+            foreach (var b in this.values) {
+                b.parent = this;
+                b.set_parents ();
+            }
         }
     }
 
@@ -838,6 +1044,21 @@ namespace GtkCssLangServer {
             if (this.important != null)
                 this.important.visit (v);
         }
+
+        public override void set_parents () {
+            this.id.parent = this;
+            this.id.set_parents ();
+            this.value.parent = this;
+            this.value.set_parents ();
+            foreach (var v in this.values) {
+                v.parent = this;
+                v.set_parents ();
+            }
+            if (this.important != null) {
+                this.important.parent = this;
+                this.important.set_parents ();
+            }
+        }
     }
 
     public class LastDeclaration : Node {
@@ -876,6 +1097,21 @@ namespace GtkCssLangServer {
             if (this.important != null)
                 this.important.visit (v);
         }
+
+        public override void set_parents () {
+            this.id.parent = this;
+            this.id.set_parents ();
+            this.value.parent = this;
+            this.value.set_parents ();
+            foreach (var v in this.values) {
+                v.parent = this;
+                v.set_parents ();
+            }
+            if (this.important != null) {
+                this.important.parent = this;
+                this.important.set_parents ();
+            }
+        }
     }
 
     public class Important : Node {
@@ -910,6 +1146,15 @@ namespace GtkCssLangServer {
             foreach (var b in this.values)
                 b.visit (v);
         }
+
+        public override void set_parents () {
+            this.id.parent = this;
+            this.id.set_parents ();
+            foreach (var v in this.values) {
+                v.parent = this;
+                v.set_parents ();
+            }
+        }
     }
 
     public class ParenthesizedQuery : Node {
@@ -926,6 +1171,11 @@ namespace GtkCssLangServer {
 
         public override void visit_children (ASTVisitor v) {
             this.query.visit (v);
+        }
+
+        public override void set_parents () {
+            this.query.parent = this;
+            this.query.set_parents ();
         }
     }
 
@@ -947,6 +1197,13 @@ namespace GtkCssLangServer {
             this.lhs.visit (v);
             this.rhs.visit (v);
         }
+
+        public override void set_parents () {
+            this.lhs.parent = this;
+            this.lhs.set_parents ();
+            this.rhs.parent = this;
+            this.rhs.set_parents ();
+        }
     }
 
     public class UnaryQuery : Node {
@@ -963,6 +1220,11 @@ namespace GtkCssLangServer {
 
         public override void visit_children (ASTVisitor v) {
             this.query.visit (v);
+        }
+
+        public override void set_parents () {
+            this.query.parent = this;
+            this.query.set_parents ();
         }
     }
 
@@ -981,6 +1243,11 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             this.selector.visit (v);
         }
+
+        public override void set_parents () {
+            this.selector.parent = this;
+            this.selector.set_parents ();
+        }
     }
 
     public class ParenthesizedValue : Node {
@@ -997,6 +1264,11 @@ namespace GtkCssLangServer {
 
         public override void visit_children (ASTVisitor v) {
             this.inner.visit (v);
+        }
+
+        public override void set_parents () {
+            this.inner.parent = this;
+            this.inner.set_parents ();
         }
     }
 
@@ -1036,6 +1308,13 @@ namespace GtkCssLangServer {
             if (this.unit != null)
                 this.unit.visit (v);
         }
+
+        public override void set_parents () {
+            if (this.unit != null) {
+                this.unit.parent = this;
+                this.unit.set_parents ();
+            }
+        }
     }
 
     public class FloatValue : Node {
@@ -1053,6 +1332,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             if (this.unit != null)
                 this.unit.visit (v);
+        }
+
+        public override void set_parents () {
+            if (this.unit != null) {
+                this.unit.parent = this;
+                this.unit.set_parents ();
+            }
         }
     }
 
@@ -1084,6 +1370,13 @@ namespace GtkCssLangServer {
             this.id.visit (v);
             this.arguments.visit (v);
         }
+
+        public override void set_parents () {
+            this.id.parent = this;
+            this.id.set_parents ();
+            this.arguments.parent = this;
+            this.arguments.set_parents ();
+        }
     }
 
     public class BinaryExpression : Node {
@@ -1103,6 +1396,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             this.left.visit (v);
             this.right.visit (v);
+        }
+
+        public override void set_parents () {
+            this.left.parent = this;
+            this.left.set_parents ();
+            this.right.parent = this;
+            this.right.set_parents ();
         }
     }
 
@@ -1124,6 +1424,13 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             foreach (var b in this.values)
                 b.visit (v);
+        }
+
+        public override void set_parents () {
+            foreach (var v in this.values) {
+                v.parent = this;
+                v.set_parents ();
+            }
         }
     }
 

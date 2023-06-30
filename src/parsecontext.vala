@@ -37,6 +37,7 @@ namespace GtkCssLangServer {
             if (tree != null) {
                 var root = tree.root_node();
                 this.sheet = to_node (root, text);
+                this.sheet.set_parents ();
             }
         }
 
