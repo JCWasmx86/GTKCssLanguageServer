@@ -50,7 +50,11 @@ namespace GtkCssLangServer {
         public uint character { get; set; default = -1; }
     }
 
-    class DocumentSymbol : Object, Json.Serializable {
+    class DocumentSymbolParams: Object {
+        public TextDocumentIdentifier textDocument { get; set; }
+    }
+
+    class DocumentSymbol : Object {
         public string? name { get; set; }
         public string? detail { get; set; }
         public int kind { get; set; }

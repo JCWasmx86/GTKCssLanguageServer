@@ -148,12 +148,29 @@ namespace GtkCssLangServer {
                 case "textDocument/hover":
                     this.hover (client, id, parameters);
                     break;
+                case "textDocument/documentSymbol":
+                    this.symbols (client, id, parameters);
+                    break;
                 }
             } catch (Error e) {
                 client.reply_error_async (id, Jsonrpc.ClientError.INTERNAL_ERROR, "Error: %s".printf (e.message), null);
                 return false;
             }
             return true;
+        }
+
+        void symbols (Jsonrpc.Client client, Variant id, Variant params) throws Error {
+            var p = Util.parse_variant<DocumentSymbolParams> (@params);
+            var uri = p.textDocument.uri;
+            var ctx = this.ctxs[uri];
+            var array = new Json.Array ();
+            if (ctx != null) {
+                foreach (var sym in ctx.symbols ()) {
+                    array.add_element (Json.gobject_serialize (sym));
+                }
+            }
+            Variant result = Json.gvariant_deserialize (new Json.Node.alloc ().init_array (array), null);
+            client.reply (id, result);
         }
 
         void hover (Jsonrpc.Client client, Variant id, Variant params) throws Error {
@@ -181,7 +198,8 @@ namespace GtkCssLangServer {
                                           capabilities: build_dict (
                                                                     textDocumentSync: new Variant.int32 (1 /* Full*/),
                                                                     diagnosticProvider: new Variant.boolean (true),
-                                                                    hoverProvider: new Variant.boolean (true)
+                                                                    hoverProvider: new Variant.boolean (true),
+                                                                    documentSymbolProvider: new Variant.boolean (true)
                                           ),
                                           serverInfo: build_dict (
                                                                   name: new Variant.string ("GTK CSS Language Server"),

@@ -60,7 +60,8 @@ namespace GtkCssLangServer {
         private string extract (Node node) {
             if (node.range.start.line != node.range.end.line)
                 return "<<>>";
-            return this.lines[node.range.start.line].substring (node.range.start.line, node.range.end.line - node.range.start.line);
+            var line = node.range.start.line;
+            return this.lines[line].substring (node.range.start.character, node.range.end.character - node.range.start.character);
         }
 
         public void visitStyleSheet (StyleSheet node) { node.visit_children (this); }
@@ -73,6 +74,7 @@ namespace GtkCssLangServer {
             if (node.identifier is Identifier) {
                 var name = this.extract (node.identifier);
                 this.colors[name] = node.identifier.range.start;
+                info ("Extracted color %s [%u:%u:%u]", name, node.identifier.range.start.line, node.identifier.range.start.character, node.identifier.range.end.character);
             }
         }
 

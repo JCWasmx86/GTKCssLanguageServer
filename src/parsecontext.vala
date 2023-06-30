@@ -45,6 +45,24 @@ namespace GtkCssLangServer {
             }
         }
 
+        internal DocumentSymbol[] symbols() {
+            var r = new DocumentSymbol[0];
+            if (this.extractor == null)
+                return r;
+            foreach (var color in this.extractor.colors.get_keys ()) {
+                var p = this.extractor.colors[color];
+                r += new DocumentSymbol() {
+                    name = color,
+                    kind = SymbolKind.Field,
+                    range = new Range() {
+                        start = p,
+                        end = p
+                    }
+                };
+            }
+            return r;
+        }
+
         // Used for hovering/completion
         internal IIdentifier? extract_identifier (uint line, uint character) {
             if (line >= this.lines.length)
