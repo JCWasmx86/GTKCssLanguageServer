@@ -1,0 +1,106 @@
+/* dataextractor.vala
+ *
+ * Copyright 2023 JCWasmx86 <JCWasmx86@t-online.de>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+namespace GtkCssLangServer {
+    public class ColorReference {
+        public string name;
+        public Range range;
+    }
+
+    public class CallReference {
+        public string name;
+        public Range range;
+    }
+
+    public class PropertyReference {
+        public string name;
+        public Range range;
+    }
+
+    public class DataExtractor : ASTVisitor {
+        // @define-color colors
+        private GLib.HashTable<string, Position> colors;
+        // Access to colors from e.g. libadwaita
+        private ColorReference[] external_color_references;
+        // @foo and there is a @define-color foo #123123
+        private ColorReference[] color_references;
+        // E.g. calls to lighter(color) or mix(a,b)
+        private CallReference[] calls;
+        // Property-references like min-width: 5px;
+        private PropertyReference[] property_uses;
+
+        public DataExtractor () {
+            this.colors = new GLib.HashTable<string, Position> (GLib.str_hash, GLib.str_equal);
+            this.external_color_references = new ColorReference[0];
+            this.color_references = new ColorReference[0];
+            this.calls = new CallReference[0];
+            this.property_uses = new PropertyReference[0];
+        }
+
+        public void visitStyleSheet (StyleSheet node) { node.visit_children (this); }
+        public void visitImportStatement (ImportStatement node) { node.visit_children (this); }
+        public void visitMediaStatement (MediaStatement node) { node.visit_children (this); }
+        public void visitCharsetStatement (CharsetStatement node) { node.visit_children (this); }
+        public void visitNamespaceStatement (NamespaceStatement node) { node.visit_children (this); }
+        public void visitDefineColorStatement (DefineColorStatement node) { node.visit_children (this); }
+        public void visitKeyframesStatement (KeyframesStatement node) { node.visit_children (this); }
+        public void visitKeyFrameBlockList (KeyFrameBlockList node) { node.visit_children (this); }
+        public void visitKeyFrame (KeyFrame node) { node.visit_children (this); }
+        public void visitFrom (From node) { node.visit_children (this); }
+        public void visitTo (To node) { node.visit_children (this); }
+        public void visitSupportsStatement (SupportsStatement node) { node.visit_children (this); }
+        public void visitAtRule (AtRule node) { node.visit_children (this); }
+        public void visitRuleSet (RuleSet node) { node.visit_children (this); }
+        public void visitSelectors (Selectors node) { node.visit_children (this); }
+        public void visitBlock (Block node) { node.visit_children (this); }
+        public void visitNestingSelector (NestingSelector node) { node.visit_children (this); }
+        public void visitUniversalSelector (UniversalSelector node) { node.visit_children (this); }
+        public void visitClassSelector (ClassSelector node) { node.visit_children (this); }
+        public void visitPseudoClassSelector (PseudoClassSelector node) { node.visit_children (this); }
+        public void visitPseudoElementSelector (PseudoElementSelector node) { node.visit_children (this); }
+        public void visitIdSelector (IdSelector node) { node.visit_children (this); }
+        public void visitAttributeSelector (AttributeSelector node) { node.visit_children (this); }
+        public void visitChildSelector (ChildSelector node) { node.visit_children (this); }
+        public void visitDescendantSelector (DescendantSelector node) { node.visit_children (this); }
+        public void visitSibilingSelector (SibilingSelector node) { node.visit_children (this); }
+        public void visitAdjacentSibilingSelector (AdjacentSibilingSelector node) { node.visit_children (this); }
+        public void visitPseudoClassArguments (PseudoClassArguments node) { node.visit_children (this); }
+        public void visitDeclaration (Declaration node) { node.visit_children (this); }
+        public void visitLastDeclaration (LastDeclaration node) { node.visit_children (this); }
+        public void visitImportant (Important node) { node.visit_children (this); }
+        public void visitFeatureQuery (FeatureQuery node) { node.visit_children (this); }
+        public void visitParenthesizedQuery (ParenthesizedQuery node) { node.visit_children (this); }
+        public void visitBinaryQuery (BinaryQuery node) { node.visit_children (this); }
+        public void visitUnaryQuery (UnaryQuery node) { node.visit_children (this); }
+        public void visitSelectorQuery (SelectorQuery node) { node.visit_children (this); }
+        public void visitParenthesizedValue (ParenthesizedValue node) { node.visit_children (this); }
+        public void visitColorValue (ColorValue node) { node.visit_children (this); }
+        public void visitStringValue (StringValue node) { node.visit_children (this); }
+        public void visitIntegerValue (IntegerValue node) { node.visit_children (this); }
+        public void visitFloatValue (FloatValue node) { node.visit_children (this); }
+        public void visitUnit (Unit node) { node.visit_children (this); }
+        public void visitCallExpression (CallExpression node) { node.visit_children (this); }
+        public void visitBinaryExpression (BinaryExpression node) { node.visit_children (this); }
+        public void visitArguments (Arguments node) { node.visit_children (this); }
+        public void visitIdentifier (Identifier node) { node.visit_children (this); }
+        public void visitAtKeyword (AtKeyword node) { node.visit_children (this); }
+        public void visitPlainValue (PlainValue node) { node.visit_children (this); }
+    }
+}
