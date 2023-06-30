@@ -37,6 +37,7 @@ namespace GtkCssLangServer {
     public class DataExtractor : ASTVisitor {
         // @define-color colors
         internal GLib.HashTable<string, Position> colors;
+        internal RuleSet[] sets;
         // Access to colors from e.g. libadwaita
         internal ColorReference[] external_color_references;
         // @foo and there is a @define-color foo #123123
@@ -50,6 +51,7 @@ namespace GtkCssLangServer {
 
         public DataExtractor (string text) {
             this.colors = new GLib.HashTable<string, Position> (GLib.str_hash, GLib.str_equal);
+            this.sets = new RuleSet[0];
             this.external_color_references = new ColorReference[0];
             this.color_references = new ColorReference[0];
             this.calls = new CallReference[0];
@@ -85,7 +87,10 @@ namespace GtkCssLangServer {
         public void visitTo (To node) { node.visit_children (this); }
         public void visitSupportsStatement (SupportsStatement node) { node.visit_children (this); }
         public void visitAtRule (AtRule node) { node.visit_children (this); }
-        public void visitRuleSet (RuleSet node) { node.visit_children (this); }
+        public void visitRuleSet (RuleSet node) {
+            this.sets += node;
+            node.visit_children (this);
+        }
         public void visitSelectors (Selectors node) { node.visit_children (this); }
         public void visitBlock (Block node) { node.visit_children (this); }
         public void visitNestingSelector (NestingSelector node) { node.visit_children (this); }
