@@ -27,6 +27,7 @@ ld = find_program('ld')
 jsons = [
     'colors.json',
     'docs.json',
+    'functions.json',
 ]
 objs = []
 foreach j : jsons

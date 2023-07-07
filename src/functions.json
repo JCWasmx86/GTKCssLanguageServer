@@ -1,0 +1,179 @@
+{
+  "lighter": {
+    "docs": ""
+  },
+  "darker": {
+    "docs": ""
+  },
+  "shade": {
+    "docs": ""
+  },
+  "alpha": {
+    "docs": ""
+  },
+  "mix": {
+    "docs": ""
+  },
+  "hsl": {
+    "docs": ""
+  },
+  "hsla": {
+    "docs": ""
+  },
+  "rgb": {
+    "docs": ""
+  },
+  "rgba": {
+    "docs": ""
+  },
+  "brightness": {
+    "docs": ""
+  },
+  "contrast": {
+    "docs": ""
+  },
+  "grayscale": {
+    "docs": ""
+  },
+  "hue-rotate": {
+    "docs": ""
+  },
+  "invert": {
+    "docs": ""
+  },
+  "opacity": {
+    "docs": ""
+  },
+  "saturate": {
+    "docs": ""
+  },
+  "sepia": {
+    "docs": ""
+  },
+  "drop-shadow": {
+    "docs": ""
+  },
+  "linear": {
+    "docs": ""
+  },
+  "eas-in-out": {
+    "docs": ""
+  },
+  "ease-in": {
+    "docs": ""
+  },
+  "ease": {
+    "docs": ""
+  },
+  "step-start": {
+    "docs": ""
+  },
+  "step-end": {
+    "docs": ""
+  },
+  "steps": {
+    "docs": ""
+  },
+  "cubic-bezier": {
+    "docs": ""
+  },
+  "-gtk-recolor": {
+    "docs": ""
+  },
+  "cross-fade": {
+    "docs": ""
+  },
+  "conic-gradient": {
+    "docs": ""
+  },
+  "image": {
+    "docs": ""
+  },
+  "calc": {
+    "docs": ""
+  },
+  "-gtk-icontheme": {
+    "docs": ""
+  },
+  "radial-gradient": {
+    "docs": ""
+  },
+  "repeating-radial-gradient": {
+    "docs": ""
+  },
+  "linear-gradient": {
+    "docs": ""
+  },
+  "repeating-linear-gradient": {
+    "docs": ""
+  },
+  "url": {
+    "docs": ""
+  },
+  "-gtk-scaled": {
+    "docs": ""
+  },
+  "matrix": {
+    "docs": ""
+  },
+  "matrix3d": {
+    "docs": ""
+  },
+  "perspective": {
+    "docs": ""
+  },
+  "rotate": {
+    "docs": ""
+  },
+  "rotateZ": {
+    "docs": ""
+  },
+  "rotate3d": {
+    "docs": ""
+  },
+  "rotateX": {
+    "docs": ""
+  },
+  "rotateY": {
+    "docs": ""
+  },
+  "scale": {
+    "docs": ""
+  },
+  "scale3d": {
+    "docs": ""
+  },
+  "scaleX": {
+    "docs": ""
+  },
+  "scaleY": {
+    "docs": ""
+  },
+  "scaleZ": {
+    "docs": ""
+  },
+  "skew": {
+    "docs": ""
+  },
+  "skewX": {
+    "docs": ""
+  },
+  "skewY": {
+    "docs": ""
+  },
+  "translate": {
+    "docs": ""
+  },
+  "translate3d": {
+    "docs": ""
+  },
+  "translateX": {
+    "docs": ""
+  },
+  "translateY": {
+    "docs": ""
+  },
+  "translateZ": {
+    "docs": ""
+  }
+}
