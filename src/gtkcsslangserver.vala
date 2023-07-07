@@ -17,27 +17,15 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-[CCode (cname = "load_docs")]
-public static extern string load_docs ();
-
 namespace GtkCssLangServer {
     public class Server : Jsonrpc.Server {
         Uri? base_uri;
         MainLoop loop;
         GLib.HashTable<string, ParseContext> ctxs;
-        GLib.HashTable<string, string> docs;
 
         internal Server (MainLoop l) {
             this.loop = l;
             this.ctxs = new GLib.HashTable<string, ParseContext> (GLib.str_hash, GLib.str_equal);
-            this.docs = new GLib.HashTable<string, string> (GLib.str_hash, GLib.str_equal);
-            var p = new Json.Parser ();
-            p.load_from_data (load_docs ());
-            var n = p.get_root ().get_object ();
-            foreach (var k in n.get_members ()) {
-                debug ("Loading docs for %s", k);
-                this.docs[k] = n.get_string_member (k);
-            }
         }
 
         protected override void notification (Jsonrpc.Client client, string method, Variant parameters) {
@@ -194,30 +182,25 @@ namespace GtkCssLangServer {
             var uri = p.textDocument.uri;
             var ctx = this.ctxs[uri];
             info ("Hovering at %s:[%u:%u]", uri, p.position.line, p.position.character);
-            var identifier = ctx.extract_identifier (p.position.line, p.position.character);
-            if (identifier == null) {
+            var response = ctx.hover (p.position.line, p.position.character);
+            if (response == null) {
                 client.reply (id, null);
                 return;
             }
-            var hover_response = new Hover ();
-            hover_response.range = identifier.range;
-            hover_response.contents = new MarkupContent ();
-            hover_response.contents.kind = "markdown";
-            hover_response.contents.value = this.docs.get (identifier.name) == null ? identifier.name : this.docs.get (identifier.name);
-            client.reply (id, Util.object_to_variant (hover_response));
+            client.reply (id, Util.object_to_variant (response));
         }
 
         void initialize (Jsonrpc.Client client, Variant id, Variant @params) throws Error {
             var init = Util.parse_variant<InitializeParams> (@params);
             this.base_uri = Uri.parse (init.rootUri, UriFlags.NONE);
             client.reply (id, build_dict (
-                                          capabilities: build_dict (
-                                                                    textDocumentSync: new Variant.int32 (1 /* Full*/),
-                                                                    diagnosticProvider: new Variant.boolean (true),
-                                                                    hoverProvider: new Variant.boolean (true),
-                                                                    documentSymbolProvider: new Variant.boolean (true),
-                                                                    declarationProvider: new Variant.boolean (true),
-                                                                    definitionProvider: new Variant.boolean (true)
+                                          capabilities : build_dict (
+                                                                     textDocumentSync: new Variant.int32 (1 /* Full*/),
+                                                                     diagnosticProvider: new Variant.boolean (true),
+                                                                     hoverProvider: new Variant.boolean (true),
+                                                                     documentSymbolProvider: new Variant.boolean (true),
+                                                                     declarationProvider: new Variant.boolean (true),
+                                                                     definitionProvider: new Variant.boolean (true)
                                           ),
                                           serverInfo: build_dict (
                                                                   name: new Variant.string ("GTK CSS Language Server"),
@@ -241,4 +224,3 @@ namespace GtkCssLangServer {
         }
     }
 }
-

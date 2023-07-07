@@ -7,7 +7,7 @@
 - [x] Add CI
 - [x] Fork [tree-sitter-css](https://github.com/tree-sitter/tree-sitter-css) and adjust to GTK syntax.
   - [x] Jump to definition
-  - [ ] Better hovering
+  - [x] Better hovering
   - [ ] Better auto-completion
   - [ ] Documentsymbols
     - [x] Colors defined using `@define-color`

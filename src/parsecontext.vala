@@ -18,6 +18,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+[CCode (cname = "load_colors")]
+public static extern string load_colors ();
+
+[CCode (cname = "load_docs")]
+public static extern string load_docs ();
+
 namespace GtkCssLangServer {
     internal class ParseContext {
         Diagnostic[] diags;
@@ -26,8 +32,11 @@ namespace GtkCssLangServer {
         string[] lines;
         Node sheet;
         DataExtractor? extractor;
+        Json.Object color_docs;
+        GLib.HashTable<string, string> property_docs;
 
         internal ParseContext (Diagnostic[] diags, string text, string uri) {
+            this.property_docs = new GLib.HashTable<string, string> (GLib.str_hash, GLib.str_equal);
             this.diags = diags;
             this.text = text;
             this.uri = uri;
@@ -42,6 +51,15 @@ namespace GtkCssLangServer {
                 tree.free ();
                 this.extractor = new DataExtractor (text);
                 this.sheet.visit (this.extractor);
+            }
+            var p = new Json.Parser ();
+            p.load_from_data (load_colors ());
+            this.color_docs = p.get_root ().get_object ();
+            p = new Json.Parser ();
+            p.load_from_data (load_docs ());
+            var n = p.get_root ().get_object ();
+            foreach (var k in n.get_members ()) {
+                this.property_docs[k] = n.get_string_member (k);
             }
         }
 
@@ -78,46 +96,49 @@ namespace GtkCssLangServer {
             return null;
         }
 
-        // Used for hovering/completion
-        internal IIdentifier ? extract_identifier (uint line, uint character) {
-            if (line >= this.lines.length)
-                return null;
-            var l = this.lines[line];
-            if (character >= l.length)
-                return null;
-            var c = l[character];
-            // Some other stuff like e.g. numbers
-            if (c != '-' && !c.isalpha ())
-                return null;
-            var lower = character;
-            while (lower != 0) {
-                var lc = l[lower];
-                if (lc != '-' && lc != '@' && !lc.isalpha ()) {
-                    lower++;
-                    break;
-                }
-                lower--;
-            }
-            var higher = character;
-            while (higher != 0) {
-                var lc = l[higher];
-                if (lc != '-' && lc != '@' && !lc.isalpha ()) {
-                    break;
-                }
-                higher++;
-            }
-            var n = l.substring (lower, higher - lower);
-            var r = new Range () {
-                start = new Position () {
-                    line = line,
-                    character = lower
-                },
-                end = new Position () {
-                    line = line,
-                    character = higher
-                },
+        internal Hover ? hover (uint line, uint character) {
+            var p = new Position () {
+                line = line,
+                character = character
             };
-            return new IIdentifier (n, r);
+            var hover_response = new Hover ();
+            hover_response.contents = new MarkupContent ();
+            hover_response.contents.kind = "markdown";
+            foreach (var color in this.extractor.color_references) {
+                if (color.range.contains (p)) {
+                    var c = extract_color_docs (color.name);
+                    if (c != null) {
+                        hover_response.range = color.range;
+                        hover_response.contents.value = c;
+                        return hover_response;
+                    }
+                }
+            }
+            foreach (var pu in this.extractor.property_uses) {
+                if (pu.range.contains (p)) {
+                    var v = this.property_docs[pu.name];
+                    if (v != null) {
+                        hover_response.range = pu.range;
+                        hover_response.contents.value = v;
+                        return hover_response;
+                    }
+                }
+            }
+            return null;
+        }
+
+        internal string ? extract_color_docs (string name) {
+            foreach (var k in this.color_docs.get_members ()) {
+                var obj = this.color_docs.get_object_member (k);
+                var arr = obj.get_array_member ("colors");
+                for (var i = 0; i < arr.get_length (); i++) {
+                    var s = arr.get_string_element (i);
+                    info ("%s vs %s", s, name);
+                    if (s == "@" + name)
+                        return k + " colors:\n\n" + obj.get_string_member ("docs");
+                }
+            }
+            return null;
         }
     }
 }

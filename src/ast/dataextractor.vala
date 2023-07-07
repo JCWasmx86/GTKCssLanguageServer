@@ -91,6 +91,7 @@ namespace GtkCssLangServer {
             this.sets += node;
             node.visit_children (this);
         }
+
         public void visitSelectors (Selectors node) { node.visit_children (this); }
         public void visitBlock (Block node) { node.visit_children (this); }
         public void visitNestingSelector (NestingSelector node) { node.visit_children (this); }
@@ -105,8 +106,30 @@ namespace GtkCssLangServer {
         public void visitSibilingSelector (SibilingSelector node) { node.visit_children (this); }
         public void visitAdjacentSibilingSelector (AdjacentSibilingSelector node) { node.visit_children (this); }
         public void visitPseudoClassArguments (PseudoClassArguments node) { node.visit_children (this); }
-        public void visitDeclaration (Declaration node) { node.visit_children (this); }
-        public void visitLastDeclaration (LastDeclaration node) { node.visit_children (this); }
+        public void visitDeclaration (Declaration node) {
+            if (node.id is Identifier) {
+                var name = this.extract (node.id);
+                this.property_uses += new PropertyReference () {
+                    name = name,
+                    range = node.id.range
+                };
+                info ("Extracted property %s [%u:%u:%u]", name, node.id.range.start.line, node.id.range.start.character, node.id.range.end.character);
+            }
+            node.visit_children (this);
+        }
+
+        public void visitLastDeclaration (LastDeclaration node) {
+            if (node.id is Identifier) {
+                var name = this.extract (node.id);
+                this.property_uses += new PropertyReference () {
+                    name = name,
+                    range = node.id.range
+                };
+                info ("Extracted property %s [%u:%u:%u]", name, node.id.range.start.line, node.id.range.start.character, node.id.range.end.character);
+            }
+            node.visit_children (this);
+        }
+
         public void visitImportant (Important node) { node.visit_children (this); }
         public void visitFeatureQuery (FeatureQuery node) { node.visit_children (this); }
         public void visitParenthesizedQuery (ParenthesizedQuery node) { node.visit_children (this); }
@@ -119,7 +142,18 @@ namespace GtkCssLangServer {
         public void visitIntegerValue (IntegerValue node) { node.visit_children (this); }
         public void visitFloatValue (FloatValue node) { node.visit_children (this); }
         public void visitUnit (Unit node) { node.visit_children (this); }
-        public void visitCallExpression (CallExpression node) { node.visit_children (this); }
+        public void visitCallExpression (CallExpression node) {
+            if (node.id is Identifier) {
+                var name = this.extract (node.id);
+                this.calls += new CallReference () {
+                    name = name,
+                    range = node.id.range
+                };
+                info ("Extracted call %s [%u:%u:%u]", name, node.id.range.start.line, node.id.range.start.character, node.id.range.end.character);
+            }
+            node.visit_children (this);
+        }
+
         public void visitBinaryExpression (BinaryExpression node) { node.visit_children (this); }
         public void visitArguments (Arguments node) { node.visit_children (this); }
         public void visitIdentifier (Identifier node) { node.visit_children (this); }
@@ -133,6 +167,7 @@ namespace GtkCssLangServer {
             }
             node.visit_children (this);
         }
+
         public void visitPlainValue (PlainValue node) { node.visit_children (this); }
     }
 }
