@@ -1,179 +1,179 @@
 {
   "lighter": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "darker": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "shade": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "alpha": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "mix": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "hsl": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "hsla": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "rgb": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "rgba": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "brightness": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "contrast": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "grayscale": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "hue-rotate": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "invert": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "opacity": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "saturate": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "sepia": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "drop-shadow": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "linear": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "eas-in-out": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "ease-in": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "ease": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "step-start": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "step-end": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "steps": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "cubic-bezier": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "-gtk-recolor": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "cross-fade": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "conic-gradient": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "image": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "calc": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "-gtk-icontheme": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "radial-gradient": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "repeating-radial-gradient": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "linear-gradient": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "repeating-linear-gradient": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "url": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "-gtk-scaled": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "matrix": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "matrix3d": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "perspective": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "rotate": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "rotateZ": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "rotate3d": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "rotateX": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "rotateY": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "scale": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "scale3d": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "scaleX": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "scaleY": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "scaleZ": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "skew": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "skewX": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "skewY": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "translate": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "translate3d": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "translateX": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "translateY": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   },
   "translateZ": {
-    "docs": ""
+    "docs": "Missing function docs. Please contribute."
   }
 }

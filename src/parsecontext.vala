@@ -24,6 +24,9 @@ public static extern string load_colors ();
 [CCode (cname = "load_docs")]
 public static extern string load_docs ();
 
+[CCode (cname = "load_functions")]
+public static extern string load_functions ();
+
 namespace GtkCssLangServer {
     internal class ParseContext {
         Diagnostic[] diags;
@@ -33,6 +36,7 @@ namespace GtkCssLangServer {
         Node sheet;
         DataExtractor? extractor;
         Json.Object color_docs;
+        Json.Object function_docs;
         GLib.HashTable<string, string> property_docs;
 
         internal ParseContext (Diagnostic[] diags, string text, string uri) {
@@ -61,6 +65,9 @@ namespace GtkCssLangServer {
             foreach (var k in n.get_members ()) {
                 this.property_docs[k] = n.get_string_member (k);
             }
+            p = new Json.Parser ();
+            p.load_from_data (load_functions ());
+            this.function_docs = p.get_root ().get_object ();
         }
 
         internal DocumentSymbol[] symbols () {
@@ -120,6 +127,16 @@ namespace GtkCssLangServer {
                     if (v != null) {
                         hover_response.range = pu.range;
                         hover_response.contents.value = v;
+                        return hover_response;
+                    }
+                }
+            }
+            foreach (var c in this.extractor.calls) {
+                if (c.range.contains (p)) {
+                    var v = this.function_docs.get_object_member (c.name);
+                    if (v != null) {
+                        hover_response.range = c.range;
+                        hover_response.contents.value = v.get_string_member ("docs");
                         return hover_response;
                     }
                 }
