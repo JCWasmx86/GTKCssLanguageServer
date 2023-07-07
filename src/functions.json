@@ -1,62 +1,62 @@
 {
   "lighter": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Produces a brighter variant of the passed color"
   },
   "darker": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Produces a darker variant of the passed color."
   },
   "shade": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Changes the lightness of the passed color. The number ranges from 0 for black to 2 for white"
   },
   "alpha": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Replaces the alpha values of the passed color with the double in range 0 to 1."
   },
   "mix": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Interpolates between the two colors."
   },
   "hsl": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "The `hsl()` functional notation expresses an sRGB color according to its hue, saturation, and lightness components."
   },
   "hsla": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "The `hsla()` functional notation expresses an sRGB color according to its hue, saturation, lightness and alpha components."
   },
   "rgb": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "The `rgb()` functional notation expresses a color according to its red, green, and blue components."
   },
   "rgba": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "The `rgba()` functional notation expresses a color according to its red, green, blue and alpha components."
   },
   "brightness": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Applies a linear multiplier value on an element or an input image, making the image appear brighter or darker."
   },
   "contrast": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Adjusts the contrast of the input image."
   },
   "grayscale": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Converts the input image to grayscale."
   },
   "hue-rotate": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Rotates the hue of an element and its contents."
   },
   "invert": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Inverts the color samples in the input image."
   },
   "opacity": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Applies transparency to the samples in the input image."
   },
   "saturate": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Super-saturates or desaturates the input image"
   },
   "sepia": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Converts the input image to sepia, giving tit a warmer, more yellow/brown appearance."
   },
   "drop-shadow": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Applies a drop shadow effect to the input image."
   },
   "linear": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Defines a piecewise linear function that interpolates linearly between its points, allowing you to approximate more complex animations like bounce and elastic effects. The interpolation is done at a constant rate from beginning to end. A typical use of the `linear()` function is to provide many points to approximate any curve."
   },
-  "eas-in-out": {
+  "ease-in-out": {
     "docs": "Missing function docs. Please contribute."
   },
   "ease-in": {
@@ -78,7 +78,7 @@
     "docs": "Missing function docs. Please contribute."
   },
   "-gtk-recolor": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Recolors a icon from a given URI with the selected palette."
   },
   "cross-fade": {
     "docs": "Missing function docs. Please contribute."
@@ -93,25 +93,25 @@
     "docs": "Missing function docs. Please contribute."
   },
   "-gtk-icontheme": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "The specified icon name is used to look up a themed icon, while taking into account the values of the -gtk-icon-palette property."
   },
   "radial-gradient": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Creates an image consisting of a progressive transition between two or more colors that radiate from an origin. Its shape may be a circle or an ellipse."
   },
   "repeating-radial-gradient": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Creates an image consisting of repeating gradients that radiate from an origin."
   },
   "linear-gradient": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Creates an image consisting of a progressive transition between two or more colors along a straight line."
   },
   "repeating-linear-gradient": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Creates an image consisting of repeating linear gradients."
   },
   "url": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "Is used to include a file. The parameter is an absolute URL, a relative URL, a blob URL, or a data URL."
   },
   "-gtk-scaled": {
-    "docs": "Missing function docs. Please contribute."
+    "docs": "`-gtk-scaled` can be used to provide a normal and a hi-resolution variant of an image."
   },
   "matrix": {
     "docs": "Missing function docs. Please contribute."
