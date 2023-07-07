@@ -17,7 +17,7 @@ ts_sources = [
     'src/subtree.c',
     'src/tree.c',
     'src/tree_cursor.c',
-    'src/treesitter_parser.c',
+    'src/parser.c',
 ]
 ts_lib = static_library('ts', ts_sources, include_directories: incdirs)
 
