@@ -3,7 +3,7 @@
   - [ ] Autocomplete properties
   - [ ] Autocomplete values
 - [ ] Formatting using prettier.
-- [ ] Docs on hover
+- [x] Docs on hover
 - [x] Add CI
 - [x] Fork [tree-sitter-css](https://github.com/tree-sitter/tree-sitter-css) and adjust to GTK syntax.
   - [x] Jump to definition
