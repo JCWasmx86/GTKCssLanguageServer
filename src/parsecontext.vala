@@ -197,6 +197,8 @@ namespace GtkCssLangServer {
                 return new CompletionItem[0];
             var ret = new CompletionItem[0];
             var c = p.position.character;
+            info ("%c", l[c]);
+            info ("%s", l.substring (0, c));
             if (c == 1 && l[0] == '@') {
                 ret += new CompletionItem ("@define-color", "define-color ${1:name} ${2:color};$0");
             } else if (c != 0 && (l[c - 1] == '@' || is_color (l, c))) {
@@ -216,6 +218,9 @@ namespace GtkCssLangServer {
                     // TODO: Add parameters to auto-completion.
                     ret += new CompletionItem (k, k + ": ${1:args};$0");
                 }
+            } else if (l[c] == ')' && c > 4 && l[c - 1] == '(' && l[c - 2] == 'r' && l[c - 3] == 'i' && l[c - 4] == 'd') {
+                ret += new CompletionItem ("ltr", "ltr");
+                ret += new CompletionItem ("rtl", "rtl");
             }
 
             return ret;
