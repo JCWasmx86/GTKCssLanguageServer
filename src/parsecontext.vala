@@ -214,7 +214,7 @@ namespace GtkCssLangServer {
             } else if (is_property (l, c)) {
                 foreach (var k in this.property_docs.get_keys ()) {
                     // TODO: Add parameters to auto-completion.
-                    ret += new CompletionItem (k, k + " ${1:args};$0");
+                    ret += new CompletionItem (k, k + ": ${1:args};$0");
                 }
             }
 
