@@ -1,0 +1,135 @@
+{
+  "first-child": {
+    "function": false,
+    "docs": "The `:first-child` CSS pseudo-class represents the first element among a group of sibling elements."
+  },
+  "last-child": {
+    "function": false,
+    "docs": "The `:last-child` CSS pseudo-class represents the last element among a group of sibling elements."
+  },
+  "only-child": {
+    "function": false,
+    "docs": "The `:only-child` CSS pseudo-class represents an element without any siblings. This is the same as `:first-child:last-child` or `:nth-child(1):nth-last-child(1)`, but with a lower specificity."
+  },
+  "active": {
+    "function": false,
+    "docs": "The `:active` CSS pseudo-class represents an element (such as a button) that is being activated by the user. When using a mouse, \"activation\" typically starts when the user presses down the primary mouse button."
+  },
+  "hover": {
+    "function": false,
+    "docs": "The `:hover` CSS pseudo-class matches when the user interacts with an element with a pointing device, but does not necessarily activate it. It is generally triggered when the user hovers over an element with the cursor (mouse pointer)."
+  },
+  "selected": {
+    "function": false,
+    "docs": "..."
+  },
+  "disabled": {
+    "function": false,
+    "docs": "The `:disabled` CSS pseudo-class represents any disabled element. An element is disabled if it can't be activated (selected, clicked on, typed into, etc.) or accept focus. The element also has an enabled state, in which it can be activated or accept focus."
+  },
+  "indeterminate": {
+    "function": false,
+    "docs": "The `:indeterminate` CSS pseudo-class represents any form element whose state is indeterminate."
+  },
+  "focus": {
+    "function": false,
+    "docs": "The `:focus` CSS pseudo-class represents an element (such as a form input) that has received focus. It is generally triggered when the user clicks or taps on an element or selects it with the keyboard's Tab key."
+  },
+  "backdrop": {
+    "function": false,
+    "docs": "..."
+  },
+  "link": {
+    "function": false,
+    "docs": "The `:link` CSS pseudo-class represents an element that has not yet been visited."
+  },
+  "visited": {
+    "function": false,
+    "docs": "The `:visited` CSS pseudo-class applies once the link has been visited by the user."
+  },
+  "checked": {
+    "function": false,
+    "docs": "The `:checked` CSS pseudo-class selector represents any radio-button or checkbox in a element that is checked or toggled to an `on` state."
+  },
+  "focus-visible": {
+    "function": false,
+    "docs": "The `:focus-visible` pseudo-class applies while an element matches the `:focus` pseudo-class"
+  },
+  "focus-within": {
+    "function": false,
+    "docs": "The `:focus-within` CSS pseudo-class matches an element if the element or any of its descendants are focused. In other words, it represents an element that is itself matched by the `:focus` pseudo-class or has a descendant that is matched by `:focus`."
+  },
+  "nth-child": {
+    "function": true,
+    "docs": "The `:nth-child()` CSS pseudo-class matches elements based on their position among a group of siblings.",
+    "argList": [
+      [
+        {
+          "type": "constant",
+          "values": [
+            "even",
+            "odd"
+          ]
+        }
+      ]
+    ]
+  },
+  "nth-last-child": {
+    "function": true,
+    "docs": "The `:nth-last-child()` CSS pseudo-class matches elements based on their position among a group of siblings, counting from the end.",
+    "argList": [
+      [
+        {
+          "type": "constant",
+          "values": [
+            "even",
+            "odd"
+          ]
+        }
+      ]
+    ]
+  },
+  "not": {
+    "function": true,
+    "docs": "The `:not()` CSS pseudo-class represents elements that do not match a list of selectors. Since it prevents specific items from being selected, it is known as the negation pseudo-class.",
+    "argList": [
+      [
+        {
+          "type": "constant",
+          "values": [
+            "*"
+          ]
+        }
+      ]
+    ]
+  },
+  "dir": {
+    "function": true,
+    "docs": "The `:dir()` CSS pseudo-class matches elements based on the directionality of the text contained in them.",
+    "argList": [
+      [
+        {
+          "type": "constant",
+          "values": [
+            "ltr",
+            "rtl"
+          ]
+        }
+      ]
+    ]
+  },
+  "drop": {
+    "function": true,
+    "docs": "...",
+    "argList": [
+      [
+        {
+          "type": "constant",
+          "values": [
+            "active"
+          ]
+        }
+      ]
+    ]
+  }
+}

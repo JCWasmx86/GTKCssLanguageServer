@@ -29,6 +29,7 @@ jsons = [
     'docs.json',
     'functions.json',
     'properties.json',
+    'selectors.json',
 ]
 objs = []
 foreach j : jsons
