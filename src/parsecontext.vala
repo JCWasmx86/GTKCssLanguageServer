@@ -168,6 +168,15 @@ namespace GtkCssLangServer {
             return false;
         }
 
+        private bool is_property (string line, uint pos) {
+            while (pos > 0) {
+                if (!(line[pos].isspace () || line[pos] == '-' || line[pos].isalnum ()))
+                    return false;
+                pos--;
+            }
+            return true;
+        }
+
         internal CompletionItem[] complete (CompletionParams p) {
             if (p.position.line > this.lines.length)
                 return new CompletionItem[0];
@@ -189,6 +198,11 @@ namespace GtkCssLangServer {
                         var color = arr.get_string_element (i);
                         ret += new CompletionItem (color, color.substring (1));
                     }
+                }
+            } else if (is_property (l, c)) {
+                foreach (var k in this.property_docs.get_keys ()) {
+                    // TODO: Add parameters to auto-completion.
+                    ret += new CompletionItem (k, k + " ${1:args};$0");
                 }
             }
 
