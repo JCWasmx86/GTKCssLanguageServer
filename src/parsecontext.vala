@@ -161,7 +161,7 @@ namespace GtkCssLangServer {
             while (pos > 0) {
                 if (line[pos] == '@')
                     return true;
-                if (line[pos] != '-' && !line[pos].isalnum ())
+                if (line[pos] != '-' && !line[pos].isalnum () && line[pos] != '_')
                     break;
                 pos--;
             }
