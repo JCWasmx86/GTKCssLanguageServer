@@ -157,6 +157,17 @@ namespace GtkCssLangServer {
             return null;
         }
 
+        private bool is_color (string line, uint pos) {
+            while (pos > 0) {
+                if (line[pos] == '@')
+                    return true;
+                if (line[pos] != '-' && !line[pos].isalnum ())
+                    break;
+                pos--;
+            }
+            return false;
+        }
+
         internal CompletionItem[] complete (CompletionParams p) {
             if (p.position.line > this.lines.length)
                 return new CompletionItem[0];
@@ -167,7 +178,7 @@ namespace GtkCssLangServer {
             var c = p.position.character;
             if (c == 1 && l[0] == '@') {
                 ret += new CompletionItem ("@define-color", "define-color ${1:name} ${2:color};$0");
-            } else if (c != 0 && l[c - 1] == '@') {
+            } else if (c != 0 && (l[c - 1] == '@' || is_color (l, c))) {
                 foreach (var color in this.extractor.colors.get_keys ()) {
                     ret += new CompletionItem ("@" + color, color);
                 }
@@ -180,6 +191,7 @@ namespace GtkCssLangServer {
                     }
                 }
             }
+
             return ret;
         }
     }
