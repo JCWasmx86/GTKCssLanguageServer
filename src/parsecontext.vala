@@ -150,7 +150,6 @@ namespace GtkCssLangServer {
                 var arr = obj.get_array_member ("colors");
                 for (var i = 0; i < arr.get_length (); i++) {
                     var s = arr.get_string_element (i);
-                    info ("%s vs %s", s, name);
                     if (s == "@" + name)
                         return k + " colors:\n\n" + obj.get_string_member ("docs");
                 }
