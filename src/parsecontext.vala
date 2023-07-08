@@ -157,5 +157,9 @@ namespace GtkCssLangServer {
             }
             return null;
         }
+
+        internal CompletionItem[] complete (CompletionParams p) {
+            return new CompletionItem[0];
+        }
     }
 }

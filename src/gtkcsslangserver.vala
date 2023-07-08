@@ -143,6 +143,9 @@ namespace GtkCssLangServer {
                 case "textDocument/definition":
                     this.definition (client, id, parameters);
                     break;
+                case "textDocument/completion":
+                    this.completion (client, method, id, parameters);
+                    break;
                 }
             } catch (Error e) {
                 client.reply_error_async (id, Jsonrpc.ClientError.INTERNAL_ERROR, "Error: %s".printf (e.message), null);
@@ -150,6 +153,24 @@ namespace GtkCssLangServer {
             }
             return true;
         }
+
+        void completion (Jsonrpc.Client client, string method, Variant id, Variant @params) throws Error {
+            var p = Util.parse_variant<CompletionParams>(@params);
+            var ctx = this.ctxs[p.textDocument.uri];
+            if (ctx == null) {
+                var json_array = new Json.Array ();
+                var variant_array = Json.gvariant_deserialize (new Json.Node.alloc ().init_array (json_array), null);
+                client.reply (id, variant_array);
+                return;
+            }
+            var completions = ctx.complete (p);
+            var json_array = new Json.Array ();
+            foreach (var comp in completions)
+                json_array.add_element (Json.gobject_serialize (comp));
+            var variant_array = Json.gvariant_deserialize (new Json.Node.alloc ().init_array (json_array), null);
+            client.reply (id, variant_array);
+        }
+
 
         void definition (Jsonrpc.Client client, Variant id, Variant params) throws Error {
             var p = Util.parse_variant<TextDocumentPositionParams> (@params);
@@ -200,7 +221,10 @@ namespace GtkCssLangServer {
                                                                      hoverProvider: new Variant.boolean (true),
                                                                      documentSymbolProvider: new Variant.boolean (true),
                                                                      declarationProvider: new Variant.boolean (true),
-                                                                     definitionProvider: new Variant.boolean (true)
+                                                                     definitionProvider: new Variant.boolean (true),
+                                                                     completionProvider: build_dict (
+                                                                                                     triggerCharacters: new Variant.strv (new string[] { "@", ":", "-" })
+                                                                     )
                                           ),
                                           serverInfo: build_dict (
                                                                   name: new Variant.string ("GTK CSS Language Server"),

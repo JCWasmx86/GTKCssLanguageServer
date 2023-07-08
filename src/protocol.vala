@@ -68,7 +68,8 @@ namespace GtkCssLangServer {
         public bool deprecated { get; set; }
         public Range range { get; set; }
     }
-    [CCode (default_value = "GTKCSS_SYMBOL_KIND_Variable")]
+
+    [CCode (default_value = "GTK_CSS_LANG_SERVER_SYMBOL_KIND_Variable")]
     enum SymbolKind {
         File = 1,
         Module = 2,
@@ -141,5 +142,75 @@ namespace GtkCssLangServer {
         Warning = 2,
         Information = 3,
         Hint = 4
+    }
+
+    [CCode (default_value = "GTK_CSS_LANG_SERVER_COMPLETION_TRIGGER_KIND_Invoked")]
+    enum CompletionTriggerKind {
+        Invoked = 1,
+        TriggerCharacter = 2,
+        TriggerForIncompleteCompletions = 3
+    }
+
+    class CompletionContext : Object {
+        public CompletionTriggerKind triggerKind { get; set;}
+        public string? triggerCharacter { get; set; }
+    }
+
+    class CompletionParams : TextDocumentPositionParams {
+        public CompletionContext? context { get; set; }
+    }
+
+    enum CompletionItemTag {
+        Deprecated = 1,
+    }
+
+    [CCode (default_value = "GTK_CSS_LANG_SERVER_INSERT_TEXT_FORMAT_PlainText")]
+    enum InsertTextFormat {
+        PlainText = 1,
+        Snippet = 2,
+    }
+
+    class CompletionItem : Object {
+        public string label { get; set; }
+        public CompletionItemKind kind { get; set; }
+        public string detail { get; set; }
+        public string insertText { get; set; }
+        public InsertTextFormat insertTextFormat { get; set; default = InsertTextFormat.PlainText; }
+
+        public CompletionItem (string label, string insert_text) {
+            this.label = label;
+            this.kind = CompletionItemKind.Keyword;
+            this.insertText = insert_text;
+            this.insertTextFormat = InsertTextFormat.Snippet;
+        }
+    }
+
+    [CCode (default_value = "GTK_CSS_LANG_SERVER_COMPLETION_ITEM_KIND_Text")]
+    enum CompletionItemKind {
+        Text = 1,
+        Method = 2,
+        Function = 3,
+        Constructor = 4,
+        Field = 5,
+        Variable = 6,
+        Class = 7,
+        Interface = 8,
+        Module = 9,
+        Property = 10,
+        Unit = 11,
+        Value = 12,
+        Enum = 13,
+        Keyword = 14,
+        Snippet = 15,
+        Color = 16,
+        File = 17,
+        Reference = 18,
+        Folder = 19,
+        EnumMember = 20,
+        Constant = 21,
+        Struct = 22,
+        Event = 23,
+        Operator = 24,
+        TypeParameter = 25
     }
 }
