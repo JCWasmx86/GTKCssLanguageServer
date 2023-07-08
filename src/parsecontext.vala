@@ -159,7 +159,16 @@ namespace GtkCssLangServer {
         }
 
         internal CompletionItem[] complete (CompletionParams p) {
-            return new CompletionItem[0];
+            if (p.position.line > this.lines.length)
+                return new CompletionItem[0];
+            var l = this.lines[p.position.line];
+            if (p.position.character > l.length)
+                return new CompletionItem[0];
+            var ret = new CompletionItem[0];
+            if (p.position.character == 1 && l[0] == '@') {
+                ret += new CompletionItem ("@define-color", "define-color ${1:name} ${2:color};$0");
+            }
+            return ret;
         }
     }
 }
