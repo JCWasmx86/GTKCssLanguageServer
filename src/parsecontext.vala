@@ -165,8 +165,21 @@ namespace GtkCssLangServer {
             if (p.position.character > l.length)
                 return new CompletionItem[0];
             var ret = new CompletionItem[0];
-            if (p.position.character == 1 && l[0] == '@') {
+            var c = p.position.character;
+            if (c == 1 && l[0] == '@') {
                 ret += new CompletionItem ("@define-color", "define-color ${1:name} ${2:color};$0");
+            } else if (c != 0 && l[c - 1] == '@') {
+                foreach (var color in this.extractor.colors.get_keys ()) {
+                    ret += new CompletionItem ("@" + color, color);
+                }
+                foreach (var k in this.color_docs.get_members ()) {
+                    var obj = this.color_docs.get_object_member (k);
+                    var arr = obj.get_array_member ("colors");
+                    for (var i = 0; i < arr.get_length (); i++) {
+                        var color = arr.get_string_element (i);
+                        ret += new CompletionItem (color, color.substring (1));
+                    }
+                }
             }
             return ret;
         }
