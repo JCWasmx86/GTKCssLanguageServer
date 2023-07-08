@@ -1,0 +1,193 @@
+{
+  "animation-delay": {},
+  "animation-direction": {},
+  "animation-duration": {},
+  "animation-fill-mode": {},
+  "animation-iteration-count": {},
+  "animation": {},
+  "animation-name": {},
+  "animation-play-state": {},
+  "animation-timing-function": {},
+  "background-blend-mode": {},
+  "background-clip": {},
+  "background-color": {
+    "argList": [
+      [
+        {
+          "type": "color",
+          "name": "color",
+          "docs": "The uniform color of the background"
+        }
+      ]
+    ]
+  },
+  "background-image": {},
+  "background": {},
+  "background-origin": {},
+  "background-position": {},
+  "background-repeat": {},
+  "background-size": {},
+  "border-bottom-color": {},
+  "border-bottom-left-radius": {},
+  "border-bottom": {},
+  "border-bottom-right-radius": {},
+  "border-bottom-style": {},
+  "border-bottom-width": {},
+  "border-color": {},
+  "border-image": {},
+  "border-image-repeat": {},
+  "border-image-slice": {},
+  "border-image-source": {},
+  "border-image-width": {},
+  "border-left-color": {},
+  "border-left": {},
+  "border-left-style": {},
+  "border-left-width": {},
+  "border": {},
+  "border-radius": {},
+  "border-right-color": {},
+  "border-right": {},
+  "border-right-style": {},
+  "border-right-width": {},
+  "border-spacing": {},
+  "border-style": {},
+  "border-top-color": {},
+  "border-top-left-radius": {},
+  "border-top": {},
+  "border-top-right-radius": {},
+  "border-top-style": {},
+  "border-top-width": {},
+  "border-width": {},
+  "box-shadow": {},
+  "caret-color": {},
+  "color": {},
+  "filter": {},
+  "font-family": {},
+  "font-feature-settings": {},
+  "font-kerning": {},
+  "font": {},
+  "font-size": {},
+  "font-stretch": {},
+  "font-style": {},
+  "font-variant-alternates": {},
+  "font-variant-caps": {},
+  "font-variant-east-asian": {},
+  "font-variant-ligatures": {},
+  "font-variant": {},
+  "font-variant-numeric": {},
+  "font-variant-position": {},
+  "font-variation-settings": {},
+  "font-weight": {},
+  "-gtk-dpi": {},
+  "-gtk-icon-filter": {},
+  "-gtk-icon-palette": {},
+  "-gtk-icon-shadow": {},
+  "-gtk-icon-size": {},
+  "-gtk-icon-source": {},
+  "-gtk-icon-style": {},
+  "-gtk-icon-transform": {},
+  "-gtk-secondary-caret-color": {},
+  "letter-spacing": {},
+  "line-height": {},
+  "margin-bottom": {},
+  "margin-left": {},
+  "margin": {},
+  "margin-right": {},
+  "margin-top": {},
+  "min-height": {},
+  "min-width": {},
+  "opacity": {},
+  "outline-color": {},
+  "outline": {},
+  "outline-offset": {},
+  "outline-style": {},
+  "outline-width": {},
+  "padding-bottom": {
+    "argList": [
+      [
+        {
+          "type": "length",
+          "name": "length",
+          "docs": "The size of the padding as a fixed value. Must be nonnegative."
+        }
+      ],
+      [
+        {
+          "type": "percentage",
+          "name": "percentage",
+          "docs": "The size of the padding as a percentage, relative to the inline size"
+        }
+      ],
+      [
+        {
+          "type": "constant",
+          "values": [
+            "inherit",
+            "initial",
+            "unset"
+          ]
+        }
+      ]
+    ]
+  },
+  "padding-left": {},
+  "padding": {},
+  "padding-right": {},
+  "padding-top": {},
+  "text-decoration-color": {},
+  "text-decoration-line": {},
+  "text-decoration": {},
+  "text-decoration-style": {},
+  "text-shadow": {
+    "argList": [
+      [
+        {
+          "type": "block",
+          "repeating": true,
+          "block": [
+            {
+              "type": "color",
+              "optional": true,
+              "name": "color",
+              "docs": "The color of the shadow. It can be specified either before or after the offset values."
+            },
+            {
+              "type": "length",
+              "name": "offset-x",
+              "docs": "Specifies the horizontal distance to the text"
+            },
+            {
+              "type": "length",
+              "name": "offset-y",
+              "docs": "Specifies the vertical distance to the text"
+            },
+            {
+              "type": "length",
+              "name": "blur-radius",
+              "docs": "The higher the value, the bigger the blur; the shadow becomes wider and lighter. If not specified, it defaults to 0."
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "type": "constant",
+          "values": [
+            "inherit",
+            "initial",
+            "unset",
+            "none"
+          ]
+        }
+      ]
+    ]
+  },
+  "text-transform": {},
+  "transform": {},
+  "transform-origin": {},
+  "transition-delay": {},
+  "transition-duration": {},
+  "transition": {},
+  "transition-property": {},
+  "transition-timing-function": {}
+}
