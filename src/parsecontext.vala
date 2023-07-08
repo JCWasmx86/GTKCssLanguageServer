@@ -169,7 +169,19 @@ namespace GtkCssLangServer {
         }
 
         private bool is_property (string line, uint pos) {
+            var in_streak = false;
             while (pos > 0) {
+                // E.g. if there is:
+                // prop-name 1px;
+                // Without the streaks, it would match
+                // With it, we would go till the space between prop-name and 1px
+                if (in_streak && !line[pos].isspace ())
+                    return false;
+                if (line[pos].isspace ()) {
+                    if (!in_streak) {
+                        in_streak = true;
+                    }
+                }
                 if (!(line[pos].isspace () || line[pos] == '-' || line[pos].isalnum ()))
                     return false;
                 pos--;
