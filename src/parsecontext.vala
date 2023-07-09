@@ -196,6 +196,19 @@ namespace GtkCssLangServer {
             return true;
         }
 
+        private bool is_selector (string line, uint pos) {
+            while (pos > 0 && line[pos].isspace ())
+                pos--;
+            while (pos > 0) {
+                if (line[pos] == ':')
+                    return true;
+                if (!line[pos].isalpha () && line[pos] != '-')
+                    break;
+                pos--;
+            }
+            return false;
+        }
+
         internal CompletionItem[] complete (CompletionParams p) {
             if (p.position.line > this.lines.length)
                 return new CompletionItem[0];
@@ -228,6 +241,23 @@ namespace GtkCssLangServer {
             } else if (l[c] == ')' && c > 4 && l[c - 1] == '(' && l[c - 2] == 'r' && l[c - 3] == 'i' && l[c - 4] == 'd') {
                 ret += new CompletionItem ("ltr", "ltr");
                 ret += new CompletionItem ("rtl", "rtl");
+            } else if (l[c] == ')' && c > 5 && l[c - 1] == '(' && l[c-2] == 'p' && l[c - 3] == 'o' && l[c - 4] == 'r' && l[c - 5] == 'd') {
+                ret += new CompletionItem ("active", "active");
+            } else if (l[c] == ')' && c > 4 && l[c - 1] == '(' && l[c - 2] == 't' && l[c - 3] == 'o' && l[c - 4] == 'n') {
+                ret += new CompletionItem ("*", "*");
+            } else if (l.substring (0, c).has_suffix (":nth-last-child(") || l.substring (0, c).has_suffix (":nth-child(")) {
+                ret += new CompletionItem ("even", "even");
+                ret += new CompletionItem ("odd", "odd");
+            } else if (is_selector (l, c)) {
+                foreach (var sc in this.selector_docs.get_members ()) {
+                    var obj = this.selector_docs.get_object_member (sc);
+                    var is_func = obj.get_boolean_member ("function");
+                    if (is_func) {
+                        ret += new CompletionItem (":" + sc + "()", sc + "()");
+                    } else {
+                        ret += new CompletionItem (":" + sc, sc);
+                    }
+                }
             }
 
             return ret;
