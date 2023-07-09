@@ -84,8 +84,9 @@ namespace GtkCssLangServer {
                                                   diagnostics: new Variant.array (VariantType.VARIANT, {})
                                       )
             );
-            var gtkcssprovider = new Gtk.CssProvider ();
             var diags = new Diagnostic[0];
+            /*
+            var gtkcssprovider = new Gtk.CssProvider ();
             gtkcssprovider.parsing_error.connect ((section, error) => {
                 var start = section.get_start_location ();
                 var s_pos = new Position () {
@@ -109,7 +110,7 @@ namespace GtkCssLangServer {
                     file = uri
                 };
             });
-            gtkcssprovider.load_from_data (text.data);
+            gtkcssprovider.load_from_data (text.data);*/
             var arr = new Json.Array ();
             foreach (var d in diags) {
                 arr.add_element (Json.gobject_serialize (d));
