@@ -109,7 +109,7 @@ namespace GtkCssLangServer {
                     file = uri
                 };
             });
-            gtkcssprovider.load_from_data (text);
+            gtkcssprovider.load_from_data (text.data);
             var arr = new Json.Array ();
             foreach (var d in diags) {
                 arr.add_element (Json.gobject_serialize (d));
