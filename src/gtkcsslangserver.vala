@@ -76,6 +76,7 @@ namespace GtkCssLangServer {
         }
 
         ParseContext ? parse (string text, string uri, Jsonrpc.Client client) throws Error {
+            this.mutex.lock ();
             client.send_notification (
                                       "textDocument/publishDiagnostics",
                                       build_dict (
@@ -119,7 +120,6 @@ namespace GtkCssLangServer {
                                                   uri : new Variant.string (uri),
                                                   diagnostics: Json.gvariant_deserialize (new Json.Node.alloc ().init_array (arr), null)
             ));
-            this.mutex.lock ();
             var p = new ParseContext (diags, text, uri);
             this.mutex.unlock ();
             return p;
