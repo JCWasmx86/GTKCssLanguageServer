@@ -55,6 +55,7 @@ namespace GtkCssLangServer {
             var elem = iter.next_value ();
             var ce = Util.parse_variant<TextDocumentContentChangeEvent> (elem);
             var text = ce.text;
+            info ("did_change: %s (%s)", text, uri);
             this.ctxs[uri] = this.parse (text, uri, client);
         }
 
