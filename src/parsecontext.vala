@@ -21,6 +21,9 @@
 [CCode (cname = "load_colors")]
 public static extern string load_colors ();
 
+[CCode (cname = "get_parser")]
+public static extern TreeSitter.TSParser get_parser ();
+
 [CCode (cname = "load_docs")]
 public static extern string load_docs ();
 
@@ -49,8 +52,7 @@ namespace GtkCssLangServer {
             this.text = text;
             this.uri = uri;
             this.lines = this.text.split ("\n");
-            var t = new TreeSitter.TSParser ();
-            t.set_language (TreeSitter.tree_sitter_css ());
+            var t = get_parser ();
             var tree = t.parse_string (null, text, text.length);
             if (tree != null) {
                 var root = tree.root_node ();

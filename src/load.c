@@ -88,3 +88,13 @@ load_selectors (void)
   return mem;
 }
 
+extern void *ts_parser_new ();
+extern void *tree_sitter_css ();
+extern unsigned int ts_parser_set_language (void *, void *);
+void*
+get_parser (void)
+{
+  void *parser = ts_parser_new();
+  ts_parser_set_language(parser, tree_sitter_css());
+  return parser;
+}
