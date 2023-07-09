@@ -241,7 +241,7 @@ namespace GtkCssLangServer {
             } else if (l[c] == ')' && c > 4 && l[c - 1] == '(' && l[c - 2] == 'r' && l[c - 3] == 'i' && l[c - 4] == 'd') {
                 ret += new CompletionItem ("ltr", "ltr");
                 ret += new CompletionItem ("rtl", "rtl");
-            } else if (l[c] == ')' && c > 5 && l[c - 1] == '(' && l[c-2] == 'p' && l[c - 3] == 'o' && l[c - 4] == 'r' && l[c - 5] == 'd') {
+            } else if (l[c] == ')' && c > 5 && l[c - 1] == '(' && l[c - 2] == 'p' && l[c - 3] == 'o' && l[c - 4] == 'r' && l[c - 5] == 'd') {
                 ret += new CompletionItem ("active", "active");
             } else if (l[c] == ')' && c > 4 && l[c - 1] == '(' && l[c - 2] == 't' && l[c - 3] == 'o' && l[c - 4] == 'n') {
                 ret += new CompletionItem ("*", "*");
@@ -259,7 +259,6 @@ namespace GtkCssLangServer {
                     }
                 }
             }
-
             return ret;
         }
     }
