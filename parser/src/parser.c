@@ -1781,7 +1781,6 @@ const TSLanguage *ts_parser_language(const TSParser *self) {
 }
 
 bool ts_parser_set_language(TSParser *self, const TSLanguage *language) {
-  fprintf (stderr, "Parser: %p Language: %p\n", self, language);
   if (language) {
     if (language->version > TREE_SITTER_LANGUAGE_VERSION) return false;
     if (language->version < TREE_SITTER_MIN_COMPATIBLE_LANGUAGE_VERSION) return false;

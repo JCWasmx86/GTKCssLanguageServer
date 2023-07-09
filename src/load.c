@@ -91,6 +91,7 @@ load_selectors (void)
 extern void *ts_parser_new ();
 extern void *tree_sitter_css ();
 extern unsigned int ts_parser_set_language (void *, void *);
+
 void*
 get_parser (void)
 {
