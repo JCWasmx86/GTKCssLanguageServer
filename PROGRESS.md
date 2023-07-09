@@ -1,6 +1,6 @@
 - [x] Basic diagnostics 
 - [ ] Autocompletion
-  - [ ] Autocomplete properties
+  - [x] Autocomplete properties
   - [ ] Autocomplete values
 - [ ] Formatting using prettier.
 - [x] Docs on hover
