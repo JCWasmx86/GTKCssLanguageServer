@@ -27,6 +27,9 @@ public static extern string load_docs ();
 [CCode (cname = "load_functions")]
 public static extern string load_functions ();
 
+[CCode (cname = "load_selectors")]
+public static extern string load_selectors ();
+
 namespace GtkCssLangServer {
     internal class ParseContext {
         Diagnostic[] diags;

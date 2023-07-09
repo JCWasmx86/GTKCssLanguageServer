@@ -35,6 +35,9 @@ extern char _binary____src_functions_json_end;
 extern char _binary____src_properties_json_start;
 extern char _binary____src_properties_json_end;
 
+extern char _binary____src_selectors_json_start;
+extern char _binary____src_selectors_json_end;
+
 const char *
 load_docs (void)
 {
@@ -72,6 +75,16 @@ load_properties (void)
   void *mem = calloc (1, len + 1);
   assert (mem);
   memcpy (mem, &_binary____src_properties_json_start, len);
+  return mem;
+}
+
+const char *
+load_selectors (void)
+{
+  size_t len = (size_t)(&_binary____src_selectors_json_end - &_binary____src_selectors_json_start);
+  void *mem = calloc (1, len + 1);
+  assert (mem);
+  memcpy (mem, &_binary____src_selectors_json_start, len);
   return mem;
 }
 
