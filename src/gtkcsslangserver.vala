@@ -22,9 +22,11 @@ namespace GtkCssLangServer {
         Uri? base_uri;
         MainLoop loop;
         GLib.HashTable<string, ParseContext> ctxs;
+        GLib.Mutex mutex;
 
         internal Server (MainLoop l) {
             this.loop = l;
+            this.mutex = new Mutex ();
             this.ctxs = new GLib.HashTable<string, ParseContext> (GLib.str_hash, GLib.str_equal);
         }
 
@@ -74,6 +76,7 @@ namespace GtkCssLangServer {
         }
 
         ParseContext ? parse (string text, string uri, Jsonrpc.Client client) throws Error {
+            this.mutex.lock ();
             client.send_notification (
                                       "textDocument/publishDiagnostics",
                                       build_dict (
@@ -117,7 +120,9 @@ namespace GtkCssLangServer {
                                                   uri : new Variant.string (uri),
                                                   diagnostics: Json.gvariant_deserialize (new Json.Node.alloc ().init_array (arr), null)
             ));
-            return new ParseContext (diags, text, uri);
+            var p = new ParseContext (diags, text, uri);
+            this.mutex.unlock ();
+            return p;
         }
 
         ParseContext ? parse_path (string file, string uri, Jsonrpc.Client client) throws Error {
