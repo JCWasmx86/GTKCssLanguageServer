@@ -348,7 +348,7 @@ void ts_subtree_balance(Subtree self, SubtreePool *pool, const TSLanguage *langu
       Subtree child2 = ts_subtree_children(tree)[tree.ptr->child_count - 1];
       long repeat_delta = (long)ts_subtree_repeat_depth(child1) - (long)ts_subtree_repeat_depth(child2);
       if (repeat_delta > 0) {
-        unsigned n = (unsigned)repeat_delta;
+        unsigned n = repeat_delta;
         for (unsigned i = n / 2; i > 0; i /= 2) {
           ts_subtree__compress(tree, i, language, &pool->tree_stack);
           n -= i;
@@ -376,7 +376,7 @@ void ts_subtree_summarize_children(
   self.ptr->visible_child_count = 0;
   self.ptr->error_cost = 0;
   self.ptr->repeat_depth = 0;
-  self.ptr->visible_descendant_count = 0;
+  self.ptr->node_count = 1;
   self.ptr->has_external_tokens = false;
   self.ptr->depends_on_column = false;
   self.ptr->has_external_scanner_state_change = false;
@@ -435,16 +435,14 @@ void ts_subtree_summarize_children(
     }
 
     self.ptr->dynamic_precedence += ts_subtree_dynamic_precedence(child);
-    self.ptr->visible_descendant_count += ts_subtree_visible_descendant_count(child);
+    self.ptr->node_count += ts_subtree_node_count(child);
 
     if (alias_sequence && alias_sequence[structural_index] != 0 && !ts_subtree_extra(child)) {
-      self.ptr->visible_descendant_count++;
       self.ptr->visible_child_count++;
       if (ts_language_symbol_metadata(language, alias_sequence[structural_index]).named) {
         self.ptr->named_child_count++;
       }
     } else if (ts_subtree_visible(child)) {
-      self.ptr->visible_descendant_count++;
       self.ptr->visible_child_count++;
       if (ts_subtree_named(child)) self.ptr->named_child_count++;
     } else if (grandchild_count > 0) {
@@ -515,7 +513,7 @@ MutableSubtree ts_subtree_new_node(
   size_t new_byte_size = ts_subtree_alloc_size(children->size);
   if (children->capacity * sizeof(Subtree) < new_byte_size) {
     children->contents = ts_realloc(children->contents, new_byte_size);
-    children->capacity = (uint32_t)(new_byte_size / sizeof(Subtree));
+    children->capacity = new_byte_size / sizeof(Subtree);
   }
   SubtreeHeapData *data = (SubtreeHeapData *)&children->contents[children->size];
 
@@ -531,7 +529,7 @@ MutableSubtree ts_subtree_new_node(
     .fragile_right = fragile,
     .is_keyword = false,
     {{
-      .visible_descendant_count = 0,
+      .node_count = 0,
       .production_id = production_id,
       .first_leaf = {.symbol = 0, .parse_state = 0},
     }}
@@ -971,7 +969,6 @@ void ts_subtree__print_dot_graph(const Subtree *self, uint32_t start_offset,
     "error-cost: %u\n"
     "has-changes: %u\n"
     "depends-on-column: %u\n"
-    "descendant-count: %u\n"
     "repeat-depth: %u\n"
     "lookahead-bytes: %u",
     start_offset, end_offset,
@@ -979,7 +976,6 @@ void ts_subtree__print_dot_graph(const Subtree *self, uint32_t start_offset,
     ts_subtree_error_cost(*self),
     ts_subtree_has_changes(*self),
     ts_subtree_depends_on_column(*self),
-    ts_subtree_visible_descendant_count(*self),
     ts_subtree_repeat_depth(*self),
     ts_subtree_lookahead_bytes(*self)
   );
