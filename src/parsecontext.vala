@@ -40,6 +40,7 @@ namespace GtkCssLangServer {
         DataExtractor? extractor;
         Json.Object color_docs;
         Json.Object function_docs;
+        Json.Object selector_docs;
         GLib.HashTable<string, string> property_docs;
 
         internal ParseContext (Diagnostic[] diags, string text, string uri) {
@@ -71,6 +72,9 @@ namespace GtkCssLangServer {
             p = new Json.Parser ();
             p.load_from_data (load_functions ());
             this.function_docs = p.get_root ().get_object ();
+            p = new Json.Parser ();
+            p.load_from_data (load_selectors ());
+            this.selector_docs = p.get_root ().get_object ();
         }
 
         internal DocumentSymbol[] symbols () {
