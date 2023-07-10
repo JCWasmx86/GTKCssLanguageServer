@@ -36,6 +36,7 @@ public static extern string load_selectors ();
 namespace GtkCssLangServer {
     internal class ParseContext {
         Diagnostic[] diags;
+        public Diagnostic[] enhanced_diags;
         string text;
         string uri;
         string[] lines;
@@ -77,6 +78,43 @@ namespace GtkCssLangServer {
             p = new Json.Parser ();
             p.load_from_data (load_selectors ());
             this.selector_docs = p.get_root ().get_object ();
+            this.enhanced_diags = new Diagnostic[0];
+            this.enhanced_diagnostics ();
+        }
+
+        void enhanced_diagnostics() {
+            if (this.sheet == null)
+                return;
+            info (">>Enhanced");
+            var diags = new Diagnostic[0];
+            foreach (var p in this.extractor.property_uses) {
+                info (">>> %s %s", p.name, (p.name == "animation-name").to_string ());
+                if (p.name == "animation-name") {
+                    var r = p.node;
+                    var name = r.value;
+                    info (">>>>>>>>> %s", name.get_type ().name ());
+                    if (name is Identifier) {
+                        var i = (Identifier)name;
+                        info ("Found property-reference called animation-name with a name %s", i.id);
+                        var found = false;
+                        foreach (var keyframe in this.extractor.keyframes) {
+                            if (keyframe.name == i.id) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            diags += new Diagnostic () {
+                                range = r.value.range,
+                                severity = DiagnosticSeverity.Error,
+                                message = "Unknown animation name \'" + i.id + "\'",
+                                file = this.uri
+                            };
+                        }
+                    }
+                }
+            }
+            this.enhanced_diags = diags;
         }
 
         internal DocumentSymbol[] symbols () {

@@ -109,8 +109,12 @@ namespace GtkCssLangServer {
                 };
             });
             gtkcssprovider.load_from_data (text.data);
+            var p = new ParseContext (diags, text, uri);
             var arr = new Json.Array ();
             foreach (var d in diags) {
+                arr.add_element (Json.gobject_serialize (d));
+            }
+            foreach (var d in p.enhanced_diags) {
                 arr.add_element (Json.gobject_serialize (d));
             }
             client.send_notification (
@@ -119,7 +123,6 @@ namespace GtkCssLangServer {
                                                   uri : new Variant.string (uri),
                                                   diagnostics: Json.gvariant_deserialize (new Json.Node.alloc ().init_array (arr), null)
             ));
-            var p = new ParseContext (diags, text, uri);
             this.mutex.unlock ();
             return p;
         }

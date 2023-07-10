@@ -32,6 +32,12 @@ namespace GtkCssLangServer {
     public class PropertyReference {
         public string name;
         public Range range;
+        public Declaration node;
+    }
+
+    public class KeyframeReference {
+        public string name;
+        public Range range;
     }
 
     public class DataExtractor : ASTVisitor {
@@ -46,6 +52,8 @@ namespace GtkCssLangServer {
         internal CallReference[] calls;
         // Property-references like min-width: 5px;
         internal PropertyReference[] property_uses;
+        // @keyframes foo {}
+        internal KeyframeReference[] keyframes;
 
         internal string[] lines;
 
@@ -56,6 +64,7 @@ namespace GtkCssLangServer {
             this.color_references = new ColorReference[0];
             this.calls = new CallReference[0];
             this.property_uses = new PropertyReference[0];
+            this.keyframes = new KeyframeReference[0];
             this.lines = text.split ("\n");
         }
 
@@ -80,7 +89,17 @@ namespace GtkCssLangServer {
             }
         }
 
-        public void visitKeyframesStatement (KeyframesStatement node) { node.visit_children (this); }
+        public void visitKeyframesStatement (KeyframesStatement node) {
+            if (node.name != null && node.name is Identifier) {
+                var name = this.extract (node.name);
+                this.keyframes += new KeyframeReference () {
+                    name = name,
+                    range = node.name.range
+                };
+                info ("Extracted keyframe %s [%u:%u:%u]", name, node.name.range.start.line, node.name.range.start.character, node.name.range.end.character);
+            }
+            node.visit_children (this);
+        }
         public void visitKeyFrameBlockList (KeyFrameBlockList node) { node.visit_children (this); }
         public void visitKeyFrame (KeyFrame node) { node.visit_children (this); }
         public void visitFrom (From node) { node.visit_children (this); }
@@ -111,7 +130,8 @@ namespace GtkCssLangServer {
                 var name = this.extract (node.id);
                 this.property_uses += new PropertyReference () {
                     name = name,
-                    range = node.id.range
+                    range = node.id.range,
+                    node = node
                 };
                 info ("Extracted property %s [%u:%u:%u]", name, node.id.range.start.line, node.id.range.start.character, node.id.range.end.character);
             }
@@ -123,7 +143,8 @@ namespace GtkCssLangServer {
                 var name = this.extract (node.id);
                 this.property_uses += new PropertyReference () {
                     name = name,
-                    range = node.id.range
+                    range = node.id.range,
+                    node = node
                 };
                 info ("Extracted property %s [%u:%u:%u]", name, node.id.range.start.line, node.id.range.start.character, node.id.range.end.character);
             }
@@ -156,7 +177,10 @@ namespace GtkCssLangServer {
 
         public void visitBinaryExpression (BinaryExpression node) { node.visit_children (this); }
         public void visitArguments (Arguments node) { node.visit_children (this); }
-        public void visitIdentifier (Identifier node) { node.visit_children (this); }
+        public void visitIdentifier (Identifier node) {
+            node.id = this.extract (node);
+            node.visit_children (this);
+        }
         public void visitAtKeyword (AtKeyword node) {
             info ("Found probable color reference: %s", this.extract (node));
             this.color_references += new ColorReference () {
@@ -166,6 +190,9 @@ namespace GtkCssLangServer {
             node.visit_children (this);
         }
 
-        public void visitPlainValue (PlainValue node) { node.visit_children (this); }
+        public void visitPlainValue (PlainValue node) {
+            node.id = this.extract (node);
+            node.visit_children (this);
+        }
     }
 }

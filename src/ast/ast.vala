@@ -1056,28 +1056,10 @@ namespace GtkCssLangServer {
         }
     }
 
-    public class LastDeclaration : Node {
-        public Node id;
-        public Node value;
-        public GenericArray<Node> values;
-        public Node? important;
+    public class LastDeclaration : Declaration {
 
         public LastDeclaration (TreeSitter.TSNode node, string text) {
-            this.init_from_node (node);
-            this.id = to_node (node.named_child (0), text);
-            this.value = to_node (node.named_child (1), text);
-            this.values = new GenericArray<Node> ();
-            for (var i = 2; i < node.named_child_count () - 1; i++) {
-                this.values.add (to_node (node.named_child (i), text));
-            }
-            if (node.named_child_count () > 2) {
-                var last_idx = node.named_child_count () - 1;
-                var last_node = to_node (node.named_child (last_idx), text);
-                if (last_node is Important)
-                    important = last_node;
-                else
-                    this.values.add (last_node);
-            }
+            base (node, text);
         }
 
         public override void visit (ASTVisitor v) {
@@ -1430,6 +1412,7 @@ namespace GtkCssLangServer {
     }
 
     public class Identifier : Node {
+        public string? id;
         public Identifier (TreeSitter.TSNode node, string text) {
             this.init_from_node (node);
         }
@@ -1449,9 +1432,9 @@ namespace GtkCssLangServer {
         }
     }
 
-    public class PlainValue : Node {
+    public class PlainValue : Identifier {
         public PlainValue (TreeSitter.TSNode node, string text) {
-            this.init_from_node (node);
+            base (node, text);
         }
 
         public override void visit (ASTVisitor v) {
