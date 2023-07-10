@@ -129,6 +129,14 @@ namespace GtkCssLangServer {
                     }
                 };
             }
+            foreach (var kf in this.extractor.keyframes) {
+                var range = kf.range;
+                r += new DocumentSymbol () {
+                    name = "@keyframes " + kf.name,
+                    kind = SymbolKind.Field,
+                    range = range
+                };
+            }
             return r;
         }
 
