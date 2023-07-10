@@ -18,7 +18,7 @@ ninja -C _build install # Without root
 ```
 For a better experience, please disable the "HTML Autocompletion" plugin.
 ### Workbench
-TBD
+Is integrated with Workbench, so it should work OOTB.
 
 ## License
 GNU General Public License v3.0
