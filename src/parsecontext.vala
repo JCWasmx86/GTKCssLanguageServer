@@ -85,14 +85,11 @@ namespace GtkCssLangServer {
         void enhanced_diagnostics() {
             if (this.sheet == null)
                 return;
-            info (">>Enhanced");
             var diags = new Diagnostic[0];
             foreach (var p in this.extractor.property_uses) {
-                info (">>> %s %s", p.name, (p.name == "animation-name").to_string ());
                 if (p.name == "animation-name") {
                     var r = p.node;
                     var name = r.value;
-                    info (">>>>>>>>> %s", name.get_type ().name ());
                     if (name is Identifier) {
                         var i = (Identifier)name;
                         info ("Found property-reference called animation-name with a name %s", i.id);
