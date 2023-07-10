@@ -154,7 +154,6 @@ namespace GtkCssLangServer {
             }
             foreach (var pu in this.extractor.property_uses) {
                 if (pu.name == "animation-name") {
-                    info (">>Animation-name: %s", pu.node.value.range.contains (p).to_string ());
                     var r = pu.node;
                     var name = r.value;
                     if (name.range.contains (p) && name is Identifier) {
