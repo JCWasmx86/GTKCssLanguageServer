@@ -82,7 +82,7 @@ namespace GtkCssLangServer {
             this.enhanced_diagnostics ();
         }
 
-        void enhanced_diagnostics() {
+        void enhanced_diagnostics () {
             if (this.sheet == null)
                 return;
             var diags = new Diagnostic[0];
@@ -91,7 +91,7 @@ namespace GtkCssLangServer {
                     var r = p.node;
                     var name = r.value;
                     if (name is Identifier) {
-                        var i = (Identifier)name;
+                        var i = (Identifier) name;
                         info ("Found property-reference called animation-name with a name %s", i.id);
                         var found = false;
                         foreach (var keyframe in this.extractor.keyframes) {
@@ -150,6 +150,24 @@ namespace GtkCssLangServer {
                                    end = this.extractor.colors[ca.name],
                                }
                     };
+                }
+            }
+            foreach (var pu in this.extractor.property_uses) {
+                if (pu.name == "animation-name") {
+                    info (">>Animation-name: %s", pu.node.value.range.contains (p).to_string ());
+                    var r = pu.node;
+                    var name = r.value;
+                    if (name.range.contains (p) && name is Identifier) {
+                        var i = (Identifier) name;
+                        foreach (var keyframe in this.extractor.keyframes) {
+                            if (keyframe.name == i.id) {
+                                return new Location () {
+                                           uri = this.uri,
+                                           range = keyframe.range
+                                };
+                            }
+                        }
+                    }
                 }
             }
             return null;
