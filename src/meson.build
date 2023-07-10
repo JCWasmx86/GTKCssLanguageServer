@@ -7,7 +7,7 @@ gtkcsslanguageserver_sources = [
     'main.vala',
     'parsecontext.vala',
     'protocol.vala',
-    'util.vala'
+    'util.vala',
 ]
 
 gtkcsslanguageserver_deps = [
@@ -33,19 +33,34 @@ jsons = [
 ]
 objs = []
 foreach j : jsons
-    objs += custom_target('objectify-' + j,
-        output : j + '.o',
+    objs += custom_target(
+        'objectify-' + j,
+        output: j + '.o',
         input: files(j),
-        command : [ ld, '--relocatable', '--format', 'binary', '--output', '@OUTPUT@', '@INPUT@' ],
+        command: [ld, '--relocatable', '--format', 'binary', '--output', '@OUTPUT@', '@INPUT@'],
     )
 endforeach
 
+r = run_command(['git', 'log', 'HEAD^..HEAD', '--format=%H'])
+commit = r.stdout().strip()
+config = {
+    'VCS_TAG': commit,
+}
+
+ids_c = configure_file(
+    input: 'ids.c.in',
+    output: 'ids.c',
+    configuration: config,
+)
+
 executable(
     'gtkcsslanguageserver',
-    gtkcsslanguageserver_sources + objs,
+    gtkcsslanguageserver_sources + objs + [ids_c],
     vala_args: '--target-glib=2.58',
     dependencies: gtkcsslanguageserver_deps,
     install: true,
     link_with: ts_lib,
 )
+
+
 

@@ -1,0 +1,2 @@
+const char *VCS_TAG = "@VCS_TAG@";
+
