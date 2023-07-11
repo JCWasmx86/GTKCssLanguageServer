@@ -46,3 +46,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+## Other language servers by this author:
+- [Swift-MesonLSP](https://github.com/JCWasmx86/Swift-MesonLSP): A meson language server written in Swift.
+
