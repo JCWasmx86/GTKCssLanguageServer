@@ -28,6 +28,7 @@ namespace GtkCssLangServer {
             this.loop = l;
             this.mutex = Mutex ();
             this.ctxs = new GLib.HashTable<string, ParseContext> (GLib.str_hash, GLib.str_equal);
+            critical ("Documentation comes from MDN: Attributions and copyright licensing by Mozilla Contributors is licensed under CC-BY-SA 2.5.");
         }
 
         protected override void notification (Jsonrpc.Client client, string method, Variant parameters) {
