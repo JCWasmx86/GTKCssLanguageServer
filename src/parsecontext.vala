@@ -255,7 +255,6 @@ namespace GtkCssLangServer {
                         in_streak = true;
                     }
                 }
-                info (">> '%u'", line[pos]);
                 if (!(line[pos].isspace () || line[pos] == '-' || line[pos].isalnum ()))
                     return false;
                 pos--;
