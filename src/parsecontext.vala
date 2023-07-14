@@ -275,6 +275,28 @@ namespace GtkCssLangServer {
             return false;
         }
 
+        private string? fix_property (string line, uint pos, string old) {
+            var old_pos = pos;
+            while (pos > 0) {
+                if (line[pos] == 0) {
+                    pos -= 1;
+                    continue;
+                }
+                if (line[pos] != '-' && !line[pos].isalnum ()) {
+                    var s = line.substring (pos + 1, old_pos - pos - 1);
+                    info ("%s %s %s", s, old, old.has_prefix (s).to_string ());
+                    if (!old.has_prefix (s))
+                        return null;
+                    var offset = old_pos - pos - 1;
+                    if (offset > old.length)
+                        return null;
+                    return old.substring (offset);
+                }
+                pos--;
+            }
+            return null;
+        }
+
         internal CompletionItem[] complete (CompletionParams p) {
             if (p.position.line > this.lines.length)
                 return new CompletionItem[0];
@@ -303,7 +325,10 @@ namespace GtkCssLangServer {
                 info ("Completing properties");
                 foreach (var k in this.property_docs.get_keys ()) {
                     // TODO: Add parameters to auto-completion.
-                    ret += new CompletionItem (k, k + ": ${1:args};$0");
+                    var fixed = fix_property (l, c, k);
+                    if (fixed == null)
+                        continue;
+                    ret += new CompletionItem (k, fixed + ": ${1:args};$0");
                 }
             } else if (l[c] == ')' && c > 4 && l[c - 1] == '(' && l[c - 2] == 'r' && l[c - 3] == 'i' && l[c - 4] == 'd') {
                 info ("Completing :dir(ltr|rtl)");
