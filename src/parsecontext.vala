@@ -275,7 +275,7 @@ namespace GtkCssLangServer {
             return false;
         }
 
-        private string? fix_property (string line, uint pos, string old) {
+        private string ? fix_property (string line, uint pos, string old) {
             var old_pos = pos;
             while (pos > 0) {
                 if (line[pos] == 0) {
@@ -284,7 +284,6 @@ namespace GtkCssLangServer {
                 }
                 if (line[pos] != '-' && !line[pos].isalnum ()) {
                     var s = line.substring (pos + 1, old_pos - pos - 1);
-                    info ("%s %s %s", s, old, old.has_prefix (s).to_string ());
                     if (!old.has_prefix (s))
                         return null;
                     var offset = old_pos - pos - 1;
