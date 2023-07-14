@@ -23,68 +23,68 @@
 #include <string.h>
 #include <stdlib.h>
 
-extern char _binary____src_docs_json_start;
-extern char _binary____src_docs_json_end;
+extern char _binary_src_docs_json_start;
+extern char _binary_src_docs_json_end;
 
-extern char _binary____src_colors_json_start;
-extern char _binary____src_colors_json_end;
+extern char _binary_src_colors_json_start;
+extern char _binary_src_colors_json_end;
 
-extern char _binary____src_functions_json_start;
-extern char _binary____src_functions_json_end;
+extern char _binary_src_functions_json_start;
+extern char _binary_src_functions_json_end;
 
-extern char _binary____src_properties_json_start;
-extern char _binary____src_properties_json_end;
+extern char _binary_src_properties_json_start;
+extern char _binary_src_properties_json_end;
 
-extern char _binary____src_selectors_json_start;
-extern char _binary____src_selectors_json_end;
+extern char _binary_src_selectors_json_start;
+extern char _binary_src_selectors_json_end;
 
 const char *
 load_docs (void)
 {
-  size_t len = (size_t)(&_binary____src_docs_json_end - &_binary____src_docs_json_start);
+  size_t len = (size_t)(&_binary_src_docs_json_end - &_binary_src_docs_json_start);
   void *mem = calloc (1, len + 1);
   assert (mem);
-  memcpy (mem, &_binary____src_docs_json_start, len);
+  memcpy (mem, &_binary_src_docs_json_start, len);
   return mem;
 }
 
 const char *
 load_colors (void)
 {
-  size_t len = (size_t)(&_binary____src_colors_json_end - &_binary____src_colors_json_start);
+  size_t len = (size_t)(&_binary_src_colors_json_end - &_binary_src_colors_json_start);
   void *mem = calloc (1, len + 1);
   assert (mem);
-  memcpy (mem, &_binary____src_colors_json_start, len);
+  memcpy (mem, &_binary_src_colors_json_start, len);
   return mem;
 }
 
 const char *
 load_functions (void)
 {
-  size_t len = (size_t)(&_binary____src_functions_json_end - &_binary____src_functions_json_start);
+  size_t len = (size_t)(&_binary_src_functions_json_end - &_binary_src_functions_json_start);
   void *mem = calloc (1, len + 1);
   assert (mem);
-  memcpy (mem, &_binary____src_functions_json_start, len);
+  memcpy (mem, &_binary_src_functions_json_start, len);
   return mem;
 }
 
 const char *
 load_properties (void)
 {
-  size_t len = (size_t)(&_binary____src_properties_json_end - &_binary____src_properties_json_start);
+  size_t len = (size_t)(&_binary_src_properties_json_end - &_binary_src_properties_json_start);
   void *mem = calloc (1, len + 1);
   assert (mem);
-  memcpy (mem, &_binary____src_properties_json_start, len);
+  memcpy (mem, &_binary_src_properties_json_start, len);
   return mem;
 }
 
 const char *
 load_selectors (void)
 {
-  size_t len = (size_t)(&_binary____src_selectors_json_end - &_binary____src_selectors_json_start);
+  size_t len = (size_t)(&_binary_src_selectors_json_end - &_binary_src_selectors_json_start);
   void *mem = calloc (1, len + 1);
   assert (mem);
-  memcpy (mem, &_binary____src_selectors_json_start, len);
+  memcpy (mem, &_binary_src_selectors_json_start, len);
   return mem;
 }
 

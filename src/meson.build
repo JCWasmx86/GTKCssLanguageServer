@@ -33,10 +33,15 @@ jsons = [
 ]
 objs = []
 foreach j : jsons
+    data_local = configure_file(
+        input: j,
+        output: j,
+        copy: true,
+    )
     objs += custom_target(
         'objectify-' + j,
         output: j + '.o',
-        input: files(j),
+        input: data_local,
         command: [ld, '--relocatable', '--format', 'binary', '--output', '@OUTPUT@', '@INPUT@'],
     )
 endforeach
@@ -61,6 +66,7 @@ executable(
     install: true,
     link_with: ts_lib,
 )
+
 
 
 
