@@ -240,6 +240,10 @@ namespace GtkCssLangServer {
         private bool is_property (string line, uint pos) {
             var in_streak = false;
             while (pos > 0) {
+                if (line[pos] == 0) {
+                    pos -= 1;
+                    continue;
+                }
                 // E.g. if there is:
                 // prop-name 1px;
                 // Without the streaks, it would match
@@ -251,6 +255,7 @@ namespace GtkCssLangServer {
                         in_streak = true;
                     }
                 }
+                info (">> '%u'", line[pos]);
                 if (!(line[pos].isspace () || line[pos] == '-' || line[pos].isalnum ()))
                     return false;
                 pos--;
@@ -279,11 +284,11 @@ namespace GtkCssLangServer {
                 return new CompletionItem[0];
             var ret = new CompletionItem[0];
             var c = p.position.character;
-            info ("%c", l[c]);
-            info ("%s", l.substring (0, c));
             if (c == 1 && l[0] == '@') {
+                info ("Completing @define-color");
                 ret += new CompletionItem ("@define-color", "define-color ${1:name} ${2:color};$0");
             } else if (c != 0 && (l[c - 1] == '@' || is_color (l, c))) {
+                info ("Completing @color");
                 foreach (var color in this.extractor.colors.get_keys ()) {
                     ret += new CompletionItem ("@" + color, color);
                 }
@@ -296,21 +301,27 @@ namespace GtkCssLangServer {
                     }
                 }
             } else if (is_property (l, c)) {
+                info ("Completing properties");
                 foreach (var k in this.property_docs.get_keys ()) {
                     // TODO: Add parameters to auto-completion.
                     ret += new CompletionItem (k, k + ": ${1:args};$0");
                 }
             } else if (l[c] == ')' && c > 4 && l[c - 1] == '(' && l[c - 2] == 'r' && l[c - 3] == 'i' && l[c - 4] == 'd') {
+                info ("Completing :dir(ltr|rtl)");
                 ret += new CompletionItem ("ltr", "ltr");
                 ret += new CompletionItem ("rtl", "rtl");
             } else if (l[c] == ')' && c > 5 && l[c - 1] == '(' && l[c - 2] == 'p' && l[c - 3] == 'o' && l[c - 4] == 'r' && l[c - 5] == 'd') {
+                info ("Completing :drop(active)");
                 ret += new CompletionItem ("active", "active");
             } else if (l[c] == ')' && c > 4 && l[c - 1] == '(' && l[c - 2] == 't' && l[c - 3] == 'o' && l[c - 4] == 'n') {
+                info ("Completing :not(*)");
                 ret += new CompletionItem ("*", "*");
             } else if (l.substring (0, c).has_suffix (":nth-last-child(") || l.substring (0, c).has_suffix (":nth-child(")) {
+                info ("Completing :nth-(last-)child(even|odd)");
                 ret += new CompletionItem ("even", "even");
                 ret += new CompletionItem ("odd", "odd");
             } else if (is_selector (l, c)) {
+                info ("Completing selectors");
                 foreach (var sc in this.selector_docs.get_members ()) {
                     var obj = this.selector_docs.get_object_member (sc);
                     var is_func = obj.get_boolean_member ("function");

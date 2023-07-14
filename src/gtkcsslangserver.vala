@@ -171,6 +171,7 @@ namespace GtkCssLangServer {
                 client.reply (id, variant_array);
                 return;
             }
+            info ("Completing at %s:[%u:%u]", p.textDocument.uri, p.position.line, p.position.character);
             var completions = ctx.complete (p);
             var json_array = new Json.Array ();
             foreach (var comp in completions)
