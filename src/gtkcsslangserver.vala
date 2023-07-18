@@ -17,6 +17,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+[CCode (cname = "gtkcssprovider_load_from_data")]
+public static extern void gtkcssprovider_load_from_data (Gtk.CssProvider provider, string data);
+
 namespace GtkCssLangServer {
     public class Server : Jsonrpc.Server {
         Uri? base_uri;
@@ -109,7 +112,7 @@ namespace GtkCssLangServer {
                     file = uri
                 };
             });
-            gtkcssprovider.load_from_data (text.data);
+            gtkcssprovider_load_from_data (gtkcssprovider, text);
             var p = new ParseContext (diags, text, uri);
             var arr = new Json.Array ();
             foreach (var d in diags) {

@@ -22,6 +22,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <gtk/gtk.h>
 
 extern char _binary_src_docs_json_start;
 extern char _binary_src_docs_json_end;
@@ -98,4 +99,11 @@ get_parser (void)
   void *parser = ts_parser_new();
   ts_parser_set_language(parser, tree_sitter_css());
   return parser;
+}
+
+void
+gtkcssprovider_load_from_data (GtkCssProvider *provider,
+                               char           *data)
+{
+  gtk_css_provider_load_from_data (provider, data, -1);
 }
