@@ -47,7 +47,7 @@ foreach j : jsons
 endforeach
 
 r = run_command(['git', 'log', 'HEAD^..HEAD', '--format=%H'])
-commit = r.stdout().strip()
+commit = r.stdout().strip().split('\n')[0]
 config = {
     'VCS_TAG': commit,
 }
