@@ -218,7 +218,7 @@ namespace GtkCssLangServer {
             var json_array = new Json.Array ();
             json_array.add_element (Json.gobject_serialize (edit));
             var variant_array = Json.gvariant_deserialize (new Json.Node.alloc ().init_array (json_array), null);
-            client.reply (id, variant_array, cancellable);
+            client.reply (id, variant_array);
         }
 
         void completion (Jsonrpc.Client client, string method, Variant id, Variant @params) throws Error {
