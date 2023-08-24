@@ -26,9 +26,21 @@ namespace GtkCssLangServer {
         }
 
         internal static Variant object_to_variant (Object object) throws Error {
-			var json = Json.gobject_serialize (object);
-			return Json.gvariant_deserialize (json, null);
-		}
+            var json = Json.gobject_serialize (object);
+            return Json.gvariant_deserialize (json, null);
+        }
+
+        public static uint count_chars_in_string (string str, char character, out int last_char_pos = null) {
+            uint count = 0;
+            last_char_pos = -1;
+            for (int i = 0; i < str.length; i++) {
+                if (str[i] == character) {
+                    count++;
+                    last_char_pos = i;
+                }
+            }
+            return count;
+        }
     }
     internal class IIdentifier {
         internal string name;

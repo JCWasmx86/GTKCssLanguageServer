@@ -51,13 +51,13 @@ namespace GtkCssLangServer {
 
         public int compare_to (Position other) {
             return line > other.line ? 1 :
-                (line == other.line ?
-                 (character > other.character ? 1 :
-                  (character == other.character ? 0 : -1)) : -1);
+                   (line == other.line ?
+                    (character > other.character ? 1 :
+                     (character == other.character ? 0 : -1)) : -1);
         }
     }
 
-    class DocumentSymbolParams: Object {
+    class DocumentSymbolParams : Object {
         public TextDocumentIdentifier textDocument { get; set; }
     }
 
@@ -152,7 +152,7 @@ namespace GtkCssLangServer {
     }
 
     class CompletionContext : Object {
-        public CompletionTriggerKind triggerKind { get; set;}
+        public CompletionTriggerKind triggerKind { get; set; }
         public string? triggerCharacter { get; set; }
     }
 
@@ -182,6 +182,31 @@ namespace GtkCssLangServer {
             this.kind = CompletionItemKind.Keyword;
             this.insertText = insert_text;
             this.insertTextFormat = InsertTextFormat.Snippet;
+        }
+    }
+
+    class DocumentRangeFormattingParams : Object {
+        public TextDocumentIdentifier textDocument { get; set; }
+        public Range? range { get; set; }
+        public FormattingOptions options { get; set; }
+    }
+
+
+    class FormattingOptions : Object {
+        public uint tabSize { get; set; }
+        public bool insertSpaces { get; set; }
+        public bool trimTrailingWhitespace { get; set; }
+        public bool insertFinalNewline { get; set; }
+        public bool trimFinalNewlines { get; set; }
+    }
+
+    class TextEdit : Object {
+        public Range range { get; set; }
+        public string newText { get; set; }
+
+        public TextEdit (Range range, string new_text = "") {
+            this.range = range;
+            this.newText = new_text;
         }
     }
 

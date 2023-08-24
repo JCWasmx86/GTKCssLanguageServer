@@ -20,6 +20,11 @@
 [CCode (cname = "gtkcssprovider_load_from_data")]
 public static extern void gtkcssprovider_load_from_data (Gtk.CssProvider provider, string data);
 
+errordomain FormattingError {
+    FORMAT,
+    READ
+}
+
 namespace GtkCssLangServer {
     public class Server : Jsonrpc.Server {
         Uri? base_uri;
@@ -158,6 +163,9 @@ namespace GtkCssLangServer {
                 case "textDocument/completion":
                     this.completion (client, method, id, parameters);
                     break;
+                case "textDocument/formatting":
+                    this.formatting (client, method, id, parameters);
+                    break;
                 }
             } catch (Error e) {
                 client.reply_error_async (id, Jsonrpc.ClientError.INTERNAL_ERROR, "Error: %s".printf (e.message), null);
@@ -166,8 +174,55 @@ namespace GtkCssLangServer {
             return true;
         }
 
+        void formatting (Jsonrpc.Client client, string method, Variant id, Variant @params) throws Error {
+            var p = Util.parse_variant<DocumentRangeFormattingParams> (@params);
+            var uri = p.textDocument.uri;
+            var ctx = this.ctxs[uri];
+            var sin = ctx.text;
+            var launcher = new SubprocessLauncher (SubprocessFlags.STDERR_PIPE | SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDIN_PIPE);
+            launcher.set_environ (Environ.get ());
+            var options = p.options;
+            var path = Uri.parse (p.textDocument.uri, UriFlags.NONE).get_path ();
+            var cmd = new string[] { "prettier", "--stdin-filepath", path };
+            if (!options.insertSpaces)
+                cmd += "--use-tabs";
+            cmd += "--tab-width";
+            cmd += "%u".printf (options.tabSize);
+            string? stdout_buf = null, stderr_buf = null;
+            var subprocess = launcher.spawnv (cmd);
+            subprocess.communicate_utf8 (sin, null, out stdout_buf, out stderr_buf);
+            if (!subprocess.get_successful ()) {
+                if (stderr_buf != null && stderr_buf.strip ().length > 0) {
+                    throw new FormattingError.FORMAT ("%s", stderr_buf);
+                } else {
+                    var sb = new StringBuilder ();
+                    foreach (var arg in cmd)
+                        sb.append (arg).append (" ");
+                    throw new FormattingError.READ ("prettier failed with error code %d: %s", subprocess.get_exit_status (), sb.str.strip ());
+                }
+            }
+            int last_nl_pos;
+            uint nl_count = Util.count_chars_in_string (sin, '\n', out last_nl_pos);
+            var edit_range = new Range () {
+                start = new Position () {
+                    line = 0,
+                    character = 0
+                },
+                end = new Position () {
+                    line = nl_count + 1,
+                    // handle trailing newline
+                    character = last_nl_pos == sin.length - 1 ? 1 : 0
+                }
+            };
+            var edit = new TextEdit (edit_range, stdout_buf);
+            var json_array = new Json.Array ();
+            json_array.add_element (Json.gobject_serialize (edit));
+            var variant_array = Json.gvariant_deserialize (new Json.Node.alloc ().init_array (json_array), null);
+            client.reply (id, variant_array, cancellable);
+        }
+
         void completion (Jsonrpc.Client client, string method, Variant id, Variant @params) throws Error {
-            var p = Util.parse_variant<CompletionParams>(@params);
+            var p = Util.parse_variant<CompletionParams> (@params);
             var ctx = this.ctxs[p.textDocument.uri];
             if (ctx == null) {
                 var json_array = new Json.Array ();
@@ -183,7 +238,6 @@ namespace GtkCssLangServer {
             var variant_array = Json.gvariant_deserialize (new Json.Node.alloc ().init_array (json_array), null);
             client.reply (id, variant_array);
         }
-
 
         void definition (Jsonrpc.Client client, Variant id, Variant params) throws Error {
             var p = Util.parse_variant<TextDocumentPositionParams> (@params);
@@ -239,9 +293,9 @@ namespace GtkCssLangServer {
                                                                                                      triggerCharacters: new Variant.strv (new string[] { "@", ":", "-" })
                                                                      )
                                           ),
-                                          serverInfo: build_dict (
-                                                                  name: new Variant.string ("GTK CSS Language Server"),
-                                                                  version: new Variant.string ("0.0.1-alpha")
+                                          serverInfo : build_dict (
+                                                                   name: new Variant.string ("GTK CSS Language Server"),
+                                                                   version: new Variant.string ("0.0.1-alpha")
                                           )
             ));
         }

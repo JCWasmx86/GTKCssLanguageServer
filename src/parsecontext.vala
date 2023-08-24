@@ -37,7 +37,7 @@ namespace GtkCssLangServer {
     internal class ParseContext {
         Diagnostic[] diags;
         public Diagnostic[] enhanced_diags;
-        string text;
+        public string text;
         string uri;
         string[] lines;
         Node sheet;
