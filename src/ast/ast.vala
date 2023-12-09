@@ -130,7 +130,7 @@ namespace GtkCssLangServer {
         case "plain_value":
             return new PlainValue (node, text);
         default:
-            warning ("Bad node: %s", node.type ());
+            info ("Bad node: %s", node.type ());
             return new ErrorNode (node, text);
         }
     }
