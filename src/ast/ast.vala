@@ -379,7 +379,6 @@ namespace GtkCssLangServer {
         public override void visit_children (ASTVisitor v) {
             if (this.value != null)
                 this.value.visit (v);
-            this.value.visit (v);
             this.keyframe_block_list.visit (v);
         }
 
